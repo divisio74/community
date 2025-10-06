@@ -3,9 +3,9 @@ package gnopub
 import (
 	"chain/runtime"
 
-	"gno.land/p/demo/svg"
 	"gno.land/p/nt/ufmt"
 	"gno.land/p/nt/ownable"
+	"gno.land/p/leon/svgbtn"
 )
 
 var (
@@ -14,22 +14,9 @@ var (
 	colors = []string{"#ffffff", "#f44336", "#2196f3", "#4caf50", "#ff9800"} // blanc, rouge, bleu, vert, orange
 
 	espace = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+
+	defaultlink = ufmt.Sprintf("https://gno.land/r/leon/hor:hall")
 )
-
-// voir diff avec leon/svgbtn.gno
-func myButton(width, height int, btnColor, textColor, text, link string) string {
-	canvas := svg.NewCanvas(width, height).
-		WithViewBox(0, 0, width, height).
-		AddStyle("text", "font-family:sans-serif;font-size:14px;text-anchor:middle;dominant-baseline:middle;")
-
-	bg := svg.NewRectangle(0, 0, width, height, btnColor)
-	bg.RX = height / 5
-	bg.RY = height / 5
-	label := svg.NewText(width/2, height/2, text, textColor)
-	canvas.Append(bg, label)
-
-	return ufmt.Sprintf("[%s](%s)", canvas.Render(text), link)
-}
 
 // Render the grid
 func RenderGrid() string {
@@ -50,21 +37,18 @@ func RenderGrid() string {
 				// If the cell is owned by someone else, link to their pub if set
 				if cell.Owner != "" && cell.Owner != caller {
 					if cell.Url != "" {
-						out += myButton(cellSize, cellSize, color, "#333333", cell.Label, cell.Url)
+						out += svgbtn.Button(cellSize, cellSize, color, "#333333", cell.Label, cell.Url)
 						out += espace
 						continue
 					} else {
-						link := ufmt.Sprintf("https://gno.land/r/leon/hor:hall")
-						out += myButton(cellSize, cellSize, color, "#333333", cell.Label, link)
+						out += svgbtn.Button(cellSize, cellSize, color, "#333333", cell.Label, defaultlink)
 						out += espace
 						continue
 					}
-
 				}
 			}
-			// si on remonte d'une accolade ca marche plus :(
-			link := ufmt.Sprintf("/r/gnopixel$help&func=BuyCells&x=%d&y=%d", x, y)
-			out += myButton(cellSize, cellSize, color, "#333333", "available", link)
+			link := ufmt.Sprintf("/r/gnopixel$help&func=BuyCell&x=%d&y=%d", x, y)
+			out += svgbtn.Button(cellSize, cellSize, color, "#333333", "available", link)
 			out += espace
 		}
 		out += "\n\n"
@@ -74,9 +58,9 @@ func RenderGrid() string {
 }
 
 // Function to sell a cell
-func SellCells(_ realm, x, y int) string {
+func SellCell(_ realm, x, y int) string {
 	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
-		return ufmt.Sprintf("XY not valid : X=%d, Y=%d", x, y)
+		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
 	}
 
 	key := ufmt.Sprintf("%d,%d", x, y)
@@ -92,16 +76,16 @@ func SellCells(_ realm, x, y int) string {
 			Url: "",
 			Label: "",
 		}
-		return ufmt.Sprintf("Cells selled!", x, y)
+		return ufmt.Sprintf("The cell was successfully sold.", x, y)
 	}
 
 	return "You are not the owner of this cell."
 }
 
 // Function to update the Pub and the Label of yours cells
-func UpdateCells(_ realm, x, y int, url, label string) string {
+func UpdateCell(_ realm, x, y int, url, label string) string {
 	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
-		return ufmt.Sprintf("XY not valid : X=%d, Y=%d", x, y)
+		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
 	}
 
 	key := ufmt.Sprintf("%d,%d", x, y)
@@ -117,7 +101,7 @@ func UpdateCells(_ realm, x, y int, url, label string) string {
 			Url: url,
 			Label: label,
 		}
-		return ufmt.Sprintf("Pub Updated!")
+		return ufmt.Sprintf("The cell Url was successfully Updated!")
 	}
 
 	return "You are not the owner of this cell."
@@ -126,9 +110,9 @@ func UpdateCells(_ realm, x, y int, url, label string) string {
 
 
 // Cell clicked function if the cells is not owned
-func BuyCells(_ realm, x, y int) string {
+func BuyCell(_ realm, x, y int) string {
 	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
-		return ufmt.Sprintf("Coordonnées invalides : X=%d, Y=%d", x, y)
+		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
 	}
 
 	key := ufmt.Sprintf("%d,%d", x, y)
@@ -145,7 +129,7 @@ func BuyCells(_ realm, x, y int) string {
 			Url: "",
 			Label: "",
 		}
-		return ufmt.Sprintf("Cell (%d,%d) purchased!", x, y)
+		return ufmt.Sprintf("The cell was successfully (%d,%d) purchased!", x, y)
 	}
 
 	// if it is the person who own it, change the color
@@ -160,19 +144,19 @@ func BuyCells(_ realm, x, y int) string {
 		nextColorIndex := (currentColorIndex + 1) % len(colors)
 		cell.Color = colors[nextColorIndex]
 		grid.Cells[key] = cell
-		return ufmt.Sprintf("Cells (%d,%d) updated! Color: %s", x, y, getColorName(cell.Color))
+		return ufmt.Sprintf("The cells (%d,%d) was updated! New color: %s", x, y, getColorName(cell.Color))
 	}
 
-	return "This Cells is owned."
+	return "This cell is owned."
 }
 
-// Reset grid (admin)
+// Reset grid (admin only)
 func reset() string {
 	if !isAuthorized(runtime.PreviousRealm().Address()) {
 		panic("unauthorized")
 	}
 	grid.Cells = make(map[string]Cell)
-	return "Grille réinitialisée!"
+	return "The grid was successfully reset."
 }
 
 // Stats of the grid (per cells owners)

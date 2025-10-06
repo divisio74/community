@@ -6,7 +6,7 @@ import (
 
 func Render(path string) string {
 	out := "# GnoPUB 📺\n\n"
-	out += "### Pub Grid 🔲:\n\n"
+	out += "### Pub Grid :\n\n"
 
 	// Path handling
 	if path == "stats" {
@@ -29,7 +29,6 @@ func Render(path string) string {
 	out += "---\n\n"
 	out += "## Admin Pannel 🛠️:\n\n"
 	out += svgbtn.DangerButton(100, 30, "Reset", "/r/gnopixel$help&func=reset") + "\n\n"
-	//out += svgbtn.SuccessButton(100, 30, "Stats", "/r/gnopixel:Stats") + "\n\n"
 
 	// Stats
 	out += getStats()

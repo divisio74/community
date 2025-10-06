@@ -1,16 +1,16 @@
 package gnopub
 
-// Cells
+// Cell structure
 type Cell struct {
 	X     int
 	Y     int
-	Color string // colors of the cells if owned
+	Color string  // colors of the cells if owned
 	Owner address // address of the owner
-	Url  string // url of the pub
-	Label string // pseudo of the owner or the name of the pub
+	Url   string  // url of the pub
+	Label string  // pseudo of the owner / name of the pub
 }
 
-// Global Grid
+// Global grid variable
 var grid = struct {
 	Width  int
 	Height int
