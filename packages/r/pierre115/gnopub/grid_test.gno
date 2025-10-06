@@ -1,4 +1,4 @@
-package gnopub
+package gnoads
 
 import (
 	"strings"

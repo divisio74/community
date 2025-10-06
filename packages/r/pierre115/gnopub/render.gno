@@ -1,12 +1,12 @@
-package gnopub
+package gnoads
 
 import (
 	"gno.land/p/leon/svgbtn"
 )
 
 func Render(path string) string {
-	out := "# GnoPUB 📺\n\n"
-	out += "### Pub Grid :\n\n"
+	out := "# GnoADS 📺\n\n"
+	out += "### ADS Grid :\n\n"
 
 	// Path handling
 	if path == "stats" {

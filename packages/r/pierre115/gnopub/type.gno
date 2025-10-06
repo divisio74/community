@@ -1,4 +1,4 @@
-package gnopub
+package gnoads
 
 // Cell structure
 type Cell struct {
@@ -6,8 +6,8 @@ type Cell struct {
 	Y     int
 	Color string  // colors of the cells if owned
 	Owner address // address of the owner
-	Url   string  // url of the pub
-	Label string  // pseudo of the owner / name of the pub
+	Url   string  // url of the ads
+	Label string  // pseudo of the owner / name of the ads
 }
 
 // Global grid variable

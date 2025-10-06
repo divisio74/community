@@ -1,4 +1,4 @@
-package gnopub
+package gnoads
 
 import (
 	"chain/runtime"
@@ -82,7 +82,7 @@ func SellCell(_ realm, x, y int) string {
 	return "You are not the owner of this cell."
 }
 
-// Function to update the Pub and the Label of yours cells
+// Function to update the Ads and the Label of yours cells
 func UpdateCell(_ realm, x, y int, url, label string) string {
 	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
 		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
