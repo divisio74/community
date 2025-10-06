@@ -9,10 +9,16 @@ import (
 	"gno.land/p/nt/ufmt"
 )
 
+const (
+    DefaultWidth  = 750
+    DefaultHeight = 500
+    DefaultMaxTicks = 10
+)
+
 // Get max ticks for axis
 func (sp ScatterPlot) GetMaxTicks() int {
     if sp.maxTicks == 0 {
-            return 10
+            return DefaultMaxTicks
     }
     return sp.maxTicks
 }
@@ -20,14 +26,14 @@ func (sp ScatterPlot) GetMaxTicks() int {
 // Get width and height of the svg
 func (sp ScatterPlot) GetWidth() int {
     if sp.Width == 0 {
-            return 750
+            return DefaultWidth
     }
     return sp.Width
 }
 
 func (sp ScatterPlot) GetHeight() int {
     if sp.Height == 0 {
-        return 600
+        return DefaultHeight
     }
     return sp.Height
 }
@@ -146,7 +152,7 @@ func (sp ScatterPlot) String() string {
             if p.Y > maxY {
                 maxY = p.Y
             }
-            if p.Y < minY {)pp
+            if p.Y < minY {
                 minY = p.Y
             }
     }
