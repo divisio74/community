@@ -47,7 +47,7 @@ func TestScatterPlotReFlag(t *testing.T) {
 		Title: "With Regression",
 		XAxis: "X",
 		YAxis: "Y",
-		FlagRe:  true,
+		FlagRe: true,
 	}
 
 	got := sp.String()
