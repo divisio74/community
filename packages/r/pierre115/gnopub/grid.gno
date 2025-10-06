@@ -1,7 +1,7 @@
 package gnopub
 
 import (
-	"std"
+	"chain/runtime"
 
 	"gno.land/p/demo/svg"
 	"gno.land/p/nt/ufmt"
@@ -45,7 +45,7 @@ func RenderGrid() string {
 			// If the cell is owned, use its color
 			if cell, ok := grid.Cells[key]; ok {
 				color = cell.Color
-				caller := std.PreviousRealm().Address()
+				caller := runtime.PreviousRealm().Address()
 
 				// If the cell is owned by someone else, link to their pub if set
 				if cell.Owner != "" && cell.Owner != caller {
@@ -80,7 +80,7 @@ func SellCells(_ realm, x, y int) string {
 	}
 
 	key := ufmt.Sprintf("%d,%d", x, y)
-	caller := std.PreviousRealm().Address()
+	caller := runtime.PreviousRealm().Address()
 	cell, exists := grid.Cells[key]
 
 	if  exists && cell.Owner == caller {
@@ -105,7 +105,7 @@ func UpdateCells(_ realm, x, y int, url, label string) string {
 	}
 
 	key := ufmt.Sprintf("%d,%d", x, y)
-	caller := std.PreviousRealm().Address()
+	caller := runtime.PreviousRealm().Address()
 	cell, exists := grid.Cells[key]
 
 	if  exists && cell.Owner == caller {
@@ -132,7 +132,7 @@ func BuyCells(_ realm, x, y int) string {
 	}
 
 	key := ufmt.Sprintf("%d,%d", x, y)
-	caller := std.PreviousRealm().Address()
+	caller := runtime.PreviousRealm().Address()
 
 	// If the cells is not owned, buy it
 	cell, exists := grid.Cells[key]
@@ -168,7 +168,7 @@ func BuyCells(_ realm, x, y int) string {
 
 // Reset grid (admin)
 func reset() string {
-	if !isAuthorized(std.PreviousRealm().Address()) {
+	if !isAuthorized(runtime.PreviousRealm().Address()) {
 		panic("unauthorized")
 	}
 	grid.Cells = make(map[string]Cell)
@@ -177,7 +177,7 @@ func reset() string {
 
 // Stats of the grid (per cells owners)
 func getStats() string {
-	stats := make(map[std.Address]int)
+	stats := make(map[address]int)
 	for _, cell := range grid.Cells {
 		if cell.Owner != "" {
 			stats[cell.Owner]++
@@ -211,6 +211,6 @@ func getColorName(color string) string {
 	}
 }
 
-func isAuthorized(addr std.Address) bool {
+func isAuthorized(addr address) bool {
 	return addr == OwnableAddress.Owner()
 }
