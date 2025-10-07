@@ -33,18 +33,17 @@ func RenderGrid() string {
 			if cell, ok := grid.Cells[key]; ok {
 				color = cell.Color
 				caller := runtime.PreviousRealm().Address()
+				link := defaultlink
+
+				if cell.Url != "" {
+					link = cell.Url
+				}
 
 				// If the cell is owned by someone else, link to their pub if set
 				if cell.Owner != "" && cell.Owner != caller {
-					if cell.Url != "" {
-						out += svgbtn.Button(cellSize, cellSize, color, "#333333", cell.Label, cell.Url)
-						out += espace
-						continue
-					} else {
-						out += svgbtn.Button(cellSize, cellSize, color, "#333333", cell.Label, defaultlink)
-						out += espace
-						continue
-					}
+					out += svgbtn.Button(cellSize, cellSize, color, "#333333", cell.Label, link)
+					out += espace
+					continue
 				}
 			}
 			link := ufmt.Sprintf("/r/gnopixel$help&func=BuyCell&x=%d&y=%d", x, y)
