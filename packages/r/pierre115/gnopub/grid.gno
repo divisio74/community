@@ -18,22 +18,25 @@ var (
 	defaultlink = ufmt.Sprintf("https://gno.land/r/leon/hor:hall")
 )
 
+const (
+	cellSize = 100
+	defaultcolor = "#ffffff"
+)
+
 // Render the grid
 func RenderGrid() string {
-	const cellSize = 100
-
 	out := ""
 
 	// Grid cells
 	for y := 0; y < grid.Height; y++ {
 		for x := 0; x < grid.Width; x++ {
 			key := ufmt.Sprintf("%d,%d", x, y)
-			color := "#ffffff"
+			color := defaultcolor
+			link := defaultlink
 			// If the cell is owned, use its color
 			if cell, ok := grid.Cells[key]; ok {
 				color = cell.Color
 				caller := runtime.PreviousRealm().Address()
-				link := defaultlink
 
 				if cell.Url != "" {
 					link = cell.Url
@@ -46,7 +49,7 @@ func RenderGrid() string {
 					continue
 				}
 			}
-			link := ufmt.Sprintf("/r/gnopixel$help&func=BuyCell&x=%d&y=%d", x, y)
+			link = ufmt.Sprintf("/r/gnopixel$help&func=BuyCell&x=%d&y=%d", x, y)
 			out += svgbtn.Button(cellSize, cellSize, color, "#333333", "available", link)
 			out += espace
 		}
