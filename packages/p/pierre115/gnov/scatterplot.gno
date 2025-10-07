@@ -10,15 +10,15 @@ import (
 )
 
 const (
-    DefaultWidth  = 750
-    DefaultHeight = 500
+    DefaultWidth    = 750
+    DefaultHeight   = 500
     DefaultMaxTicks = 10
 )
 
 // Get max ticks for axis
 func (sp ScatterPlot) GetMaxTicks() int {
     if sp.maxTicks == 0 {
-            return DefaultMaxTicks
+        return DefaultMaxTicks
     }
     return sp.maxTicks
 }
