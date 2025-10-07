@@ -59,11 +59,21 @@ func RenderGrid() string {
 	return out
 }
 
+
+// Function to validate the coordinates
+func GetValidate(x, y int) string {
+    if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
+        return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
+    }
+    return ""
+}
+
+
 // Function to sell a cell
 func SellCell(_ realm, x, y int) string {
-	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
-		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
-	}
+	if err := GetValidate(x, y); err != "" {
+        return err
+    }
 
 	key := ufmt.Sprintf("%d,%d", x, y)
 	caller := runtime.PreviousRealm().Address()
@@ -86,9 +96,9 @@ func SellCell(_ realm, x, y int) string {
 
 // Function to update the Ads and the Label of yours cells
 func UpdateCell(_ realm, x, y int, url, label string) string {
-	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
-		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
-	}
+	if err := GetValidate(x, y); err != "" {
+        return err
+    }
 
 	key := ufmt.Sprintf("%d,%d", x, y)
 	caller := runtime.PreviousRealm().Address()
@@ -113,9 +123,9 @@ func UpdateCell(_ realm, x, y int, url, label string) string {
 
 // Cell clicked function if the cells is not owned
 func BuyCell(_ realm, x, y int) string {
-	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
-		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
-	}
+	if err := GetValidate(x, y); err != "" {
+        return err
+    }
 
 	key := ufmt.Sprintf("%d,%d", x, y)
 	caller := runtime.PreviousRealm().Address()
