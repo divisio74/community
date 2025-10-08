@@ -44,9 +44,9 @@ func TestScatterPlotReFlag(t *testing.T) {
 			{X: 1, Y: 2},
 			{X: 2, Y: 4},
 		},
-		Title: "With Regression",
-		XAxis: "X",
-		YAxis: "Y",
+		Title:  "With Regression",
+		XAxis:  "X",
+		YAxis:  "Y",
 		FlagRe: true,
 	}
 
