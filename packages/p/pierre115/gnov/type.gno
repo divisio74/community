@@ -9,10 +9,10 @@ type Point struct {
 
 // Scatterplot structure
 type ScatterPlot struct {
-    Points        []Point // Points structure (points clouds)
-    Title         string  // Title of the scatter plot
-    XAxis, YAxis  string  // Title of X and Y axis
-    FlagRe        bool    // Optional flag for  linear regression
-    maxTicks      int     // Optional max ticks for axis (default 10)
-    Width, Height int     // Optional width and height of the svg (default 750x600)
+	Points        []Point // Points structure (points clouds)
+	Title         string  // Title of the scatter plot
+	XAxis, YAxis  string  // Title of X and Y axis
+	FlagRe        bool    // Optional flag for  linear regression
+	maxTicks      int     // Optional max ticks for axis (default 10)
+	Width, Height int     // Optional width and height of the svg (default 750x600)
 }
