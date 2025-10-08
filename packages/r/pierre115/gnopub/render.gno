@@ -21,7 +21,7 @@ func Render(path string) string {
 	out += "### Step 1 :\n\n"
 	out += "Buy a cell with the function `BuyCells`.\n\n"
 	out += "### Step 2 :\n\n"
-	out += "Set the pub and the label with the function `UpdateCells` on yours cells.\n\n"
+	out += "Set the ads and the label with the function `UpdateCells` on yours cells.\n\n"
 	out += "### Step 3 :\n\n"
 	out += "Sell your cells with the function `SellCells`.\n\n"
 
