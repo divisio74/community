@@ -4,24 +4,24 @@ import (
 	"strconv"
 
 	"chain"
-	"chain/runtime"
 	"chain/banker"
+	"chain/runtime"
 
-	"gno.land/p/nt/avl"
 	"gno.land/p/demo/tokens/grc721"
+	"gno.land/p/nt/avl"
 	"gno.land/p/nt/ufmt"
 )
 
 var (
-	listings       avl.Tree
-	sales          avl.Tree
-	nextListingId  = 1
-	nextSaleId     = 1
+	listings      avl.Tree
+	sales         avl.Tree
+	nextListingId = 1
+	nextSaleId    = 1
 
 	// Marketplace fee: (2.5%)
-	marketplaceFee = int64(250) // 250 basis points = 2.5%
+	marketplaceFee  = int64(250) // 250 basis points = 2.5%
 	marketplaceAddr = runtime.CurrentRealm().Address()
-	admin          address
+	admin           address
 )
 
 func init() {
