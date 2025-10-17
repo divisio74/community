@@ -6,13 +6,13 @@ import (
 
 // Listing structure
 type Listing struct {
-	ListingId   int
-	NFTGetter   grc721.NFTGetter
-	TokenId     grc721.TokenID
-	Seller      address
-	Price       int64
-	Active      bool
-	ListedAt    int64
+	ListingId int
+	NFTGetter grc721.NFTGetter
+	TokenId   grc721.TokenID
+	Seller    address
+	Price     int64
+	Active    bool
+	ListedAt  int64
 }
 
 // Sale statistics
