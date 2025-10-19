@@ -6,7 +6,7 @@ import (
 
 func Render(path string) string {
 	out := "# GnoADS 📺\n\n"
-	out += "### ADS Grid :\n\n"
+	out += "### ADS Grid \n\n"
 
 	// Path handling
 	if path == "stats" {
@@ -16,18 +16,18 @@ func Render(path string) string {
 	// Main grid
 	out += renderGrid() + "\n\n"
 
-	// tutorial
-	out += "## Tuto 📚:\n\n"
-	out += "### Step 1 :\n\n"
+	// Tutorial
+	out += "## Tuto 📚\n\n"
+	out += "### Step 1 \n\n"
 	out += "Buy a cell with the function `BuyCells`.\n\n"
-	out += "### Step 2 :\n\n"
+	out += "### Step 2 \n\n"
 	out += "Set the ads and the label with the function `UpdateCells` on yours cells.\n\n"
-	out += "### Step 3 :\n\n"
+	out += "### Step 3 \n\n"
 	out += "Sell your cells with the function `SellCells`.\n\n"
 
 	// Utility buttons
 	out += "---\n\n"
-	out += "## Admin Pannel 🛠️:\n\n"
+	out += "## Admin Pannel 🛠️\n\n"
 	out += svgbtn.DangerButton(100, 30, "Reset", "/r/gnopixel$help&func=reset") + "\n\n"
 
 	// Stats
