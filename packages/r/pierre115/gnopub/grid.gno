@@ -16,12 +16,23 @@ var (
 	espace = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 
 	defaultlink = ufmt.Sprintf("https://gno.land/r/leon/hor:hall")
+
+	grid Grid
 )
 
 const (
 	cellSize     = 100
 	defaultcolor = "#ffffff"
 )
+
+// Cell structure init
+func init() {
+	grid = Grid{
+		Width:  5,
+		Height: 5,
+		Cells:  make(map[string]Cell),
+	}
+}
 
 // Render the grid
 func renderGrid() string {

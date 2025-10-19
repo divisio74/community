@@ -4,19 +4,15 @@ package gnoads
 type Cell struct {
 	X     int
 	Y     int
-	Color string  // colors of the cells if owned
-	Owner address // address of the owner
-	Url   string  // url of the ads
-	Label string  // pseudo of the owner / name of the ads
+	Color string  // Colors of the cells if owned
+	Owner address // Address of the owner
+	Url   string  // Url of the ads
+	Label string  // Pseudo of the owner / name of the ads
 }
 
 // Global grid variable
-var grid = struct {
+type Grid struct {
 	Width  int
 	Height int
 	Cells  map[string]Cell
-}{
-	Width:  5, // init params
-	Height: 3,
-	Cells:  make(map[string]Cell),
 }
