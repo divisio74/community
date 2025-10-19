@@ -24,7 +24,7 @@ const (
 )
 
 // Render the grid
-func RenderGrid() string {
+func renderGrid() string {
 	out := ""
 
 	// Grid cells
@@ -60,7 +60,7 @@ func RenderGrid() string {
 }
 
 // Function to validate the coordinates
-func GetValidate(x, y int) string {
+func getCoordinate(x, y int) string {
 	if x < 0 || x >= grid.Width || y < 0 || y >= grid.Height {
 		return ufmt.Sprintf("Invalid coordinate : X=%d, Y=%d", x, y)
 	}
@@ -69,7 +69,7 @@ func GetValidate(x, y int) string {
 
 // Function to sell a cell
 func SellCell(_ realm, x, y int) string {
-	if err := GetValidate(x, y); err != "" {
+	if err := getCoordinate(x, y); err != "" {
 		return err
 	}
 
@@ -94,7 +94,7 @@ func SellCell(_ realm, x, y int) string {
 
 // Function to update the Ads and the Label of yours cells
 func UpdateCell(_ realm, x, y int, url, label string) string {
-	if err := GetValidate(x, y); err != "" {
+	if err := getCoordinate(x, y); err != "" {
 		return err
 	}
 
@@ -119,7 +119,7 @@ func UpdateCell(_ realm, x, y int, url, label string) string {
 
 // Cell clicked function if the cells is not owned
 func BuyCell(_ realm, x, y int) string {
-	if err := GetValidate(x, y); err != "" {
+	if err := getCoordinate(x, y); err != "" {
 		return err
 	}
 

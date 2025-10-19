@@ -14,7 +14,7 @@ func Render(path string) string {
 	}
 
 	// Main grid
-	out += RenderGrid() + "\n\n"
+	out += renderGrid() + "\n\n"
 
 	// tutorial
 	out += "## Tuto 📚:\n\n"

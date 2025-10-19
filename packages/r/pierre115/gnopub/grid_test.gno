@@ -7,7 +7,7 @@ import (
 
 // Test for basic grid rendering
 func TestRenderGrid(t *testing.T) {
-	got := RenderGrid()
+	got := renderGrid()
 
 	if got == "" {
 		t.Fatal("RenderGrid output is empty")
