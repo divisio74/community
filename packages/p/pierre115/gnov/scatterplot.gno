@@ -1,7 +1,7 @@
-// Package gnov (Gno Visual) provides functionality to render a scatter plot as an SVG image.
+// Package scatterplot provides functionality to render a scatter plot as an SVG image.
 // It takes a list of points (x,y) and draws them as circles on a 2D .
 // You can also apply Flags.
-package gnov
+package scatterplot
 
 import (
 	"math"
@@ -39,6 +39,7 @@ func (sp ScatterPlot) GetHeight() int {
 	return sp.Height
 }
 
+// Calculates a visually pleasing axis step size based on the data range and maximum number of ticks.
 func niceStep(sp ScatterPlot, rangeVal float64) float64 {
 	var niceBase float64
 	maxTicks := sp.GetMaxTicks()
