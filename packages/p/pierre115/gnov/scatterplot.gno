@@ -39,7 +39,7 @@ func (sp ScatterPlot) GetHeight() int {
 	return sp.Height
 }
 
-// Calculates a visually pleasing axis step size based on the data range and maximum number of ticks.
+// NiceStep calculates a visually pleasing axis step size based on the data range and maximum number of ticks.
 func niceStep(sp ScatterPlot, rangeVal float64) float64 {
 	var niceBase float64
 	maxTicks := sp.GetMaxTicks()
@@ -61,7 +61,7 @@ func niceStep(sp ScatterPlot, rangeVal float64) float64 {
 	return niceBase * math.Pow(10, exponent)
 }
 
-// Use the ideal steps for X and Y axis
+// StepXY use the ideal steps calculated by nicestep function for both axis
 func StepXY(sp ScatterPlot, maxX, maxY, minX, minY float64) (float64, float64, float64, float64, float64, float64) {
 
 	rangeX := maxX - minX
