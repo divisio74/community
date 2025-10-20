@@ -28,18 +28,18 @@ func IsAuthorized(addr address) bool {
 }
 
 func Render(_ string) string {
-	content := md.H1("Pierre115's Home") + md.H2("About Me") + modtext + Picture + RenderProjects() + RenderLinks()
+	content := md.H1("Pierre115's Home") + md.H2("About Me") + modtext + Picture + renderProjects() + renderLinks()
 	return strings.ReplaceAll(content, "^", "")
 }
 
-func RenderProjects() string {
+func renderProjects() string {
 	var content string
 	content += "\n\n## Projects\n\n"
 	content += md.BulletList(projects)
 	return content
 }
 
-func RenderLinks() string {
+func renderLinks() string {
 	var content string
 	content += "\n\n## Links\n\n"
 	content += md.BulletList(links)
