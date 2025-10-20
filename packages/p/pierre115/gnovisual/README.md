@@ -1,11 +1,11 @@
-# scatterplot
+# GnoVisual
 
 Package `scatterplot` renders scatter plots as SVG images. It takes a list of (x, y) points and draws them as circles on a 2D canvas, with optional support for displaying a linear regression line.
 
 ## Usage
 
 ```go
-import "gno.land/p/demo/scatterplot"
+import "gno.land/p/pierre115/gnovisual/scatterplot"
 
 func main() {
     plot := scatterplot.ScatterPlot{
