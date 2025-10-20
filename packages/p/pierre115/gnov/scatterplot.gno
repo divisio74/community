@@ -76,7 +76,7 @@ func StepXY(sp ScatterPlot, maxX, maxY, minX, minY float64) (float64, float64, f
 	return stepX, startX, endX, stepY, startY, endY
 }
 
-// Draw axes and axes titles, return SVG strings
+// RenderAxes renders the chart axes and their corresponding titles, returning the result as SVG-formatted strings for display.
 func RenderAxes(sp ScatterPlot, Width, Height int, maxX, maxY, minX, minY float64) string {
 	svgOut := ""
 
@@ -102,7 +102,7 @@ func RenderAxes(sp ScatterPlot, Width, Height int, maxX, maxY, minX, minY float6
 		return float64(Height-40) - (val-minY)/(maxY-minY)*float64(Height-60)
 	}
 
-	// N    icesteps calcul for graduation
+	// Nicesteps calcul for graduation
 	stepX, startX, endX, stepY, startY, endY := StepXY(sp, maxX, maxY, minX, minY)
 
 	// Graduation X

@@ -1,6 +1,6 @@
-# GNOV Scatterplot
+# Scatterplot
 
-The `gnov` package allows you to render a scatter plot as an SVG image. It takes a list of `(x, y)` points and draws them as circles on a 2D canvas. You can also apply optional flags to display regression lines or curves.
+The `scatterplot` package allows you to render a scatter plot as an SVG image. It takes a list of `(x, y)` points and draws them as circles on a 2D canvas. You can also apply optional flags to display regression lines or curves.
 
 ## API references
 

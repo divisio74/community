@@ -1,4 +1,4 @@
-package gnov
+package scatterplot
 
 // Points structure
 type Point struct {

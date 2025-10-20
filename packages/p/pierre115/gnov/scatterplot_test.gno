@@ -1,4 +1,4 @@
-package gnov
+package scatterplot
 
 import (
 	"strings"
