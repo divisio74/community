@@ -165,7 +165,7 @@ func renderSale(saleId int) string {
 	output += ufmt.Sprintf("- **Marketplace fee:** %s\n", formatPrice(sale.MarketplaceFee))
 
 	if sale.RoyaltyFee > 0 {
-		output += ufmt.Sprintf("- **Royalty:** %s → `%s`\n", 
+		output += ufmt.Sprintf("- **Royalty:** %s → `%s`\n",
 			formatPrice(sale.RoyaltyFee), sale.RoyaltyReceiver.String())
 	}
 
@@ -184,7 +184,7 @@ func renderStats() string {
 
 	output += ufmt.Sprintf("**Total volume:** %s\n\n", formatPrice(totalVolume))
 	output += ufmt.Sprintf("**Number of sales:** %d\n\n", totalSales)
-	output += ufmt.Sprintf("**Royalties paid:** %s (%s of volume)\n\n", 
+	output += ufmt.Sprintf("**Royalties paid:** %s (%s of volume)\n\n",
 		formatPrice(totalRoyalties), formatPercentage(totalRoyalties, totalVolume))
 
 	if totalSales > 0 {
