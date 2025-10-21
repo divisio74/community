@@ -160,7 +160,7 @@ func TestFormatPercentage(t *testing.T) {
 	for _, tt := range tests {
 		result := formatPercentage(tt.value, tt.total)
 		if result != tt.expected {
-			t.Errorf("formatPercentage(%d, %d) = %s, expected %s", 
+			t.Errorf("formatPercentage(%d, %d) = %s, expected %s",
 				tt.value, tt.total, result, tt.expected)
 		}
 	}
@@ -179,8 +179,8 @@ func TestGetListingInvalid(t *testing.T) {
 func TestGetSaleInvalid(t *testing.T) {
 	listingId, tokenId, buyer, seller, price, marketFee, royaltyFee, royaltyReceiver, soldAt := GetSale(999999)
 
-	if listingId != 0 || tokenId != "" || buyer != "" || seller != "" || 
-	   price != 0 || marketFee != 0 || royaltyFee != 0 || royaltyReceiver != "" || soldAt != 0 {
+	if listingId != 0 || tokenId != "" || buyer != "" || seller != "" ||
+		price != 0 || marketFee != 0 || royaltyFee != 0 || royaltyReceiver != "" || soldAt != 0 {
 		t.Error("GetSale with invalid ID should return zero values")
 	}
 }
