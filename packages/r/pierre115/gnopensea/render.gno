@@ -37,6 +37,8 @@ func renderHome() string {
 	output := "# 🏪 GNOPENSEA\n\n"
 	output += "Marketplace compatible **GRC-721** + **GRC-2981** (Automatic Royalties)\n\n"
 	output += "---\n\n"
+	output += ufmt.Sprintf("**Marketplace Address:** %s\n\n", marketplaceAddr.String())
+	output += "---\n\n"
 
 	output += "## Statistics\n\n"
 	output += ufmt.Sprintf("- **Active listings:** %d\n", GetActiveListingsCount())
