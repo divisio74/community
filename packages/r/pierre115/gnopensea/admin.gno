@@ -9,29 +9,29 @@ import (
 
 func SetMarketplaceFee(newFee int64) {
 
-    if runtime.OriginCaller() != admin {
-        panic("Only admin can modify fees")
-    }
+	if runtime.OriginCaller() != admin {
+		panic("Only admin can modify fees")
+	}
 
-    if newFee < 0 || newFee > 1000 { // Max 10%
-        panic("Fees must be between 0% and 10%")
-    }
+	if newFee < 0 || newFee > 1000 { // Max 10%
+		panic("Fees must be between 0% and 10%")
+	}
 
-    marketplaceFee = newFee
+	marketplaceFee = newFee
 }
 
 func WithdrawFees() {
 
-    if runtime.OriginCaller() != admin {
-        panic("Only admin can withdraw fees")
-    }
+	if runtime.OriginCaller() != admin {
+		panic("Only admin can withdraw fees")
+	}
 
-    bnkr := banker.NewBanker(banker.BankerTypeRealmSend)
-    realmAddr := runtime.CurrentRealm().Address()
+	bnkr := banker.NewBanker(banker.BankerTypeRealmSend)
+	realmAddr := runtime.CurrentRealm().Address()
 
-    balance := bnkr.GetCoins(realmAddr)
+	balance := bnkr.GetCoins(realmAddr)
 
-    if balance.AmountOf("ugnot") > 0 {
-        bnkr.SendCoins(realmAddr, admin, balance)
-    }
+	if balance.AmountOf("ugnot") > 0 {
+		bnkr.SendCoins(realmAddr, admin, balance)
+	}
 }

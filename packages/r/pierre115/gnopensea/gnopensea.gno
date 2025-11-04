@@ -4,26 +4,25 @@ import (
 	"strconv"
 
 	"chain"
-	"chain/runtime"
 	"chain/banker"
+	"chain/runtime"
 
-	"gno.land/p/nt/avl"
 	"gno.land/p/demo/tokens/grc721"
+	"gno.land/p/nt/avl"
 	"gno.land/p/nt/ufmt"
 )
-
 
 var (
 	listings              avl.Tree
 	sales                 avl.Tree
-	registeredCollections avl.Tree // address -> NFTGetter
+	registeredCollections avl.Tree // address -> NFTGetter a enelever aussi
 	nextListingId         = 1
 	nextSaleId            = 1
 
 	// Marketplace fee: 2.5%
 	marketplaceFee  = int64(250) // 250 basis points = 2.5%
 	marketplaceAddr = runtime.CurrentRealm().Address()
-	admin           =  address("g1e7r5eglptfejknps3xv2kxv6pc8wvd3wwtw6tg")
+	admin           = address("g1e7r5eglptfejknps3xv2kxv6pc8wvd3wwtw6tg")
 )
 
 // ============= PUBLIC FUNCTIONS =============
@@ -36,7 +35,7 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 		panic("Price not valid")
 	}
 
-	// Get NFT instance from registered collections
+	// Get NFT instance from registered collections a chnager pour inclure le realm nftregistry en prod
 	nftGetter, exists := registeredCollections.Get(nftRealmAddress.String())
 	if !exists {
 		panic("NFT collection not registered. The collection must call RegisterCollection() first.")
