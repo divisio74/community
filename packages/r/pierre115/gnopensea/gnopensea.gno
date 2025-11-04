@@ -4,41 +4,41 @@ import (
 	"strconv"
 
 	"chain"
-	"chain/banker"
 	"chain/runtime"
+	"chain/banker"
+	"errors"
 
-	"gno.land/p/demo/tokens/grc721"
 	"gno.land/p/nt/avl"
+	"gno.land/p/demo/tokens/grc721"
 	"gno.land/p/nt/ufmt"
 )
 
-var (
-	listings      avl.Tree
-	sales         avl.Tree
-	nextListingId = 1
-	nextSaleId    = 1
 
-	// Marketplace fee: (2.5%)
+var (
+	listings              avl.Tree
+	sales                 avl.Tree
+	registeredCollections avl.Tree // address -> NFTGetter
+	nextListingId         = 1
+	nextSaleId            = 1
+
+	// Marketplace fee: 2.5%
 	marketplaceFee  = int64(250) // 250 basis points = 2.5%
 	marketplaceAddr = runtime.CurrentRealm().Address()
-	admin           address
+	admin           =  "g1e7r5eglptfejknps3xv2kxv6pc8wvd3wwtw6tg"
 )
-
-func init() {
-	admin = runtime.PreviousRealm().Address()
-}
 
 // ============= PUBLIC FUNCTIONS =============
 
-// CreateListing - List an NFT for sale
-func CreateListing(_ realm, nftGetter grc721.NFTGetter, tokenId grc721.TokenID, price int64) int {
+// CreateListingTest - Version simplifiée pour tester avec le NFT interne du même package
+func CreateListingTest(_ realm, tokenId grc721.TokenID, price int64) int {
 	caller := runtime.PreviousRealm().Address()
 
-	if price <= 0 {
-		panic("Price must be positive")
+	if price <= 0 || price > 99999999999 {
+		panic("Price not valid")
 	}
 
-	// Get NFT instance
+	// Utiliser directement le Getter local (NFT du même package)
+	nftGetter := Getter()
 	nftInstance := nftGetter()
 
 	// Verify caller is the owner
@@ -78,14 +78,64 @@ func CreateListing(_ realm, nftGetter grc721.NFTGetter, tokenId grc721.TokenID, 
 	return listing.ListingId
 }
 
+// CreateListing - List an NFT for sale (now accepts collection address)
+func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, price int64) int {
+	caller := runtime.PreviousRealm().Address()
+
+	if price <= 0 || price > 99999999999 {
+		panic("Price not valid")
+	}
+
+	// Get NFT instance from registered collections
+	nftGetter, exists := registeredCollections.Get(nftRealmAddress.String())
+	if !exists {
+		panic("NFT collection not registered. The collection must call RegisterCollection() first.")
+	}
+
+	getter := nftGetter.(grc721.NFTGetter)
+	nftInstance := getter()
+
+	// Verify caller is the owner
+	owner, err := nftInstance.OwnerOf(tokenId)
+	if err != nil {
+		panic("Token not found: " + err.Error())
+	}
+
+	if owner != caller {
+		panic("You are not the owner of this NFT")
+	}
+
+	// Verify approvals
+	marketplaceAddr := runtime.CurrentRealm().Address()
+	approvedAddr, err := nftInstance.GetApproved(tokenId)
+	isApprovedForToken := (err == nil && approvedAddr == marketplaceAddr)
+	isApprovedForAll := nftInstance.IsApprovedForAll(owner, marketplaceAddr)
+
+	if !isApprovedForToken && !isApprovedForAll {
+		panic("You must first approve the marketplace.\nUse Approve() or SetApprovalForAll()")
+	}
+
+	// Create listing
+	listing := &Listing{
+		ListingId: nextListingId,
+		NFTGetter: getter,
+		TokenId:   tokenId,
+		Seller:    caller,
+		Price:     price,
+		Active:    true,
+		ListedAt:  runtime.ChainHeight(),
+	}
+
+	listings.Set(strconv.Itoa(nextListingId), listing)
+	nextListingId++
+
+	return listing.ListingId
+}
+
 // BuyNFT - Purchase a listed NFT with automatic royalty calculation
 func BuyNFT(_ realm, listingId int) {
 	caller := runtime.PreviousRealm().Address()
 	sent := banker.OriginSend()
-
-	// Calculate royalties (if NFT supports GRC-2981)
-	var royaltyAmount int64 = 0
-	var royaltyReceiver address
 
 	// Get listing
 	listing := getListing(listingId)
@@ -114,6 +164,10 @@ func BuyNFT(_ realm, listingId int) {
 	if currentOwner != listing.Seller {
 		panic("Seller no longer owns this NFT")
 	}
+
+	// Calculate royalties (if NFT supports GRC-2981)
+	var royaltyAmount int64 = 0
+	var royaltyReceiver address
 
 	// Check if NFT supports royalties
 	if royaltyNFT, ok := nftInstance.(grc721.IGRC2981); ok {
@@ -150,7 +204,7 @@ func BuyNFT(_ realm, listingId int) {
 		bnkr.SendCoins(realmAddr, royaltyReceiver, royaltyCoins)
 	}
 
-	// 3.TODO : Marketplace fees remain in contract (withdrawal by admin)
+	// 3. Marketplace fees remain in contract (withdrawal by admin)
 
 	// 4. Refund excess
 	if amount > listing.Price {
@@ -187,7 +241,7 @@ func BuyNFT(_ realm, listingId int) {
 }
 
 // CancelListing - Cancel a listing
-func CancelListing(_ realm, listingId int) {
+func CancelListing(_realm, listingId int) {
 	caller := runtime.PreviousRealm().Address()
 
 	listing := getListing(listingId)
@@ -208,7 +262,7 @@ func CancelListing(_ realm, listingId int) {
 }
 
 // UpdatePrice - Update listing price
-func UpdatePrice(listingId int, newPrice int64) {
+func UpdatePrice(_ realm, listingId int, newPrice int64) {
 	caller := runtime.PreviousRealm().Address()
 
 	if newPrice <= 0 {
@@ -231,6 +285,9 @@ func UpdatePrice(listingId int, newPrice int64) {
 	listing.Price = newPrice
 	listings.Set(strconv.Itoa(listingId), listing)
 }
+
+
+// Reste des fonctions (GetListing, GetRoyaltyBreakdown, Render, etc.) restent identiques...
 
 // ============= READ FUNCTIONS =============
 
