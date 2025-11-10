@@ -1,4 +1,4 @@
-package scatterplot
+package gnovisual
 
 // Points structure
 type Point struct {

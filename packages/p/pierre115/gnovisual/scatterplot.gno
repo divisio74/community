@@ -1,7 +1,7 @@
-// Package scatterplot provides functionality to render a scatter plot as an SVG image.
+// Package gnovisual provides functionality to render a scatter plot as an SVG image.
 // It takes a list of points (x,y) and draws them as circles on a 2D .
 // You can also apply Flags.
-package scatterplot
+package gnovisual
 
 import (
 	"math"
