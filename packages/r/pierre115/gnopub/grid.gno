@@ -2,6 +2,7 @@ package gnopub
 
 import (
 	"chain/runtime"
+	"strings"
 
 	"gno.land/p/leon/svgbtn"
 	"gno.land/p/moul/txlink"
@@ -14,9 +15,9 @@ var (
 
 	colors = []string{"#ffffff", "#f44336", "#2196f3", "#4caf50", "#ff9800"} // blanc, rouge, bleu, vert, orange
 
-	espace = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+	spacingCount = 23
 
-	defaultlink = ufmt.Sprintf("https://gno.land/r/leon/hor:hall")
+	defaultlink = ufmt.Sprintf("https://gno.land/")
 
 	grid Grid
 )
@@ -57,7 +58,7 @@ func renderGrid() string {
 				// If the cell is owned by someone else, link to their pub if set
 				if cell.Owner != "" && cell.Owner != caller {
 					out += svgbtn.Button(cellSize, cellSize, color, "#333333", cell.Label, link)
-					out += espace
+					out += strings.Repeat("&nbsp;", spacingCount)
 					continue
 				}
 			}
@@ -65,7 +66,7 @@ func renderGrid() string {
     			AddArgs("x", ufmt.Sprintf("%d", x), "y", ufmt.Sprintf("%d", y)).
     			URL()
 			out += svgbtn.Button(cellSize, cellSize, color, "#333333", "available", link)
-			out += espace
+			out += strings.Repeat("&nbsp;", spacingCount)
 		}
 		out += "\n\n"
 	}
