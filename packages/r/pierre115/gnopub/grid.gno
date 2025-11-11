@@ -63,8 +63,8 @@ func renderGrid() string {
 				}
 			}
 			link = txlink.NewLink("BuyCell").
-    			AddArgs("x", ufmt.Sprintf("%d", x), "y", ufmt.Sprintf("%d", y)).
-    			URL()
+				AddArgs("x", ufmt.Sprintf("%d", x), "y", ufmt.Sprintf("%d", y)).
+				URL()
 			out += svgbtn.Button(cellSize, cellSize, color, "#333333", "available", link)
 			out += strings.Repeat("&nbsp;", spacingCount)
 		}
