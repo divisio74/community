@@ -1,4 +1,4 @@
-package gnoads
+package gnopub
 
 // Cell structure
 type Cell struct {

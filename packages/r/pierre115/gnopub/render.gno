@@ -1,4 +1,4 @@
-package gnoads
+package gnopub
 
 import (
 	"gno.land/p/leon/svgbtn"

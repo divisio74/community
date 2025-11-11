@@ -1,4 +1,4 @@
-## GnoADS 📺
+## GnoPUB 📺
 
 # Intro
 

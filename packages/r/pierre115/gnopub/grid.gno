@@ -1,4 +1,4 @@
-package gnoads
+package gnopub
 
 import (
 	"chain/runtime"
