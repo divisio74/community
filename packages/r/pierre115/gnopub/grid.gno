@@ -4,6 +4,7 @@ import (
 	"chain/runtime"
 
 	"gno.land/p/leon/svgbtn"
+	"gno.land/p/moul/txlink"
 	"gno.land/p/nt/ownable"
 	"gno.land/p/nt/ufmt"
 )
@@ -60,7 +61,9 @@ func renderGrid() string {
 					continue
 				}
 			}
-			link = ufmt.Sprintf("/r/gnopixel$help&func=BuyCell&x=%d&y=%d", x, y)
+			link = txlink.NewLink("BuyCell").
+    			AddArgs("x", ufmt.Sprintf("%d", x), "y", ufmt.Sprintf("%d", y)).
+    			URL()
 			out += svgbtn.Button(cellSize, cellSize, color, "#333333", "available", link)
 			out += espace
 		}
