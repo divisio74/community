@@ -17,7 +17,7 @@ var (
 
 	spacingCount = 23
 
-	defaultlink = ufmt.Sprintf("https://gno.land/")
+	defaultlink = ufmt.Sprintf("/r/leon/hor:hall")
 
 	grid Grid
 )
