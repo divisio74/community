@@ -34,7 +34,7 @@ func Render(path string) string {
 }
 
 func renderHome() string {
-	output := "# 🏪 GNOPENSEA\n\n"
+	output := "# 🏪 GNOPENSEA9\n\n"
 	output += "Marketplace compatible **GRC-721** + **GRC-2981** (Automatic Royalties)\n\n"
 	output += "---\n\n"
 	output += ufmt.Sprintf("**Marketplace Address:** %s\n\n", marketplaceAddr.String())
@@ -48,7 +48,7 @@ func renderHome() string {
 	output += ufmt.Sprintf("- **Marketplace fee:** %s\n", formatFee(marketplaceFee))
 	output += ufmt.Sprintf("- **Balance:** %s\n\n", formatPrice(GetBalance()))
 
-	output += "[View detailed statistics](/r/pierre115/gnopensea:stats)\n\n"
+	output += "[View detailed statistics](/r/pierre115/gnopensea9:stats)\n\n"
 	output += "---\n\n"
 
 	// Active listings
@@ -88,7 +88,7 @@ func renderListingPreview(listing *Listing) string {
 	output += ufmt.Sprintf("**Market Fees:** %s\n\n", formatPrice(marketFee))
 	output += ufmt.Sprintf("**Royalty Address:** %s\n\n", royaltyAddr.String())
 	output += ufmt.Sprintf("**Marketplace Address:** %s\n\n", marketplaceAddr.String())
-	output += ufmt.Sprintf("[View details](/r/pierre115/gnopensea:listing/%d)\n\n", listing.ListingId)
+	output += ufmt.Sprintf("[View details](/r/pierre115/gnopensea9:listing/%d)\n\n", listing.ListingId)
 	output += "---\n\n"
 	return output
 }
@@ -135,7 +135,7 @@ func renderListing(listingId int) string {
 		output += "## Purchase\n\n"
 		output += "```bash\n"
 		output += "gnokey maketx call \\\n"
-		output += "  -pkgpath \"gno.land/r/pierre115/gnopensea\" \\\n"
+		output += "  -pkgpath \"gno.land/r/pierre115/gnopensea9\" \\\n"
 		output += "  -func \"BuyNFT\" \\\n"
 		output += ufmt.Sprintf("  -args \"%d\" \\\n", listingId)
 		output += ufmt.Sprintf("  -send \"%dugnot\" \\\n", listing.Price)
@@ -143,7 +143,7 @@ func renderListing(listingId int) string {
 		output += "```\n"
 	}
 
-	output += "\n[← Back](/r/pierre115/gnopensea)\n"
+	output += "\n[← Back](/r/pierre115/gnopensea9)\n"
 
 	return output
 }
@@ -194,7 +194,7 @@ func renderStats() string {
 		output += ufmt.Sprintf("**Average price:** %s\n\n", formatPrice(avgPrice))
 	}
 
-	output += "\n[← Back](/r/pierre115/gnopensea)\n"
+	output += "\n[← Back](/r/pierre115/gnopensea9)\n"
 
 	return output
 }
