@@ -3,30 +3,30 @@ package nftregistry
 import (
 	"chain/runtime"
 
-	"gno.land/p/nt/avl"
 	"gno.land/p/demo/tokens/grc721"
+	"gno.land/p/nt/avl"
 )
 
 // CollectionInfo - Extended metadata stored in the registry
 type CollectionInfo struct {
-	Address         address
-	Name            string
-	Symbol          string
-	Creator         address
-	RegisteredAt    int64
-	Verified        bool
-	Category        string
-	Description     string
-	ExternalURL     string
-	NFTGetter       grc721.NFTGetter
+	Address          address
+	Name             string
+	Symbol           string
+	Creator          address
+	RegisteredAt     int64
+	Verified         bool
+	Category         string
+	Description      string
+	ExternalURL      string
+	NFTGetter        grc721.NFTGetter
 	SupportsMetadata bool
 }
 
 var (
-	collections avl.Tree
-	admins avl.Tree
+	collections     avl.Tree
+	admins          avl.Tree
 	categoriesIndex avl.Tree
-	owner address
+	owner           address
 	registrationFee int64 = 1000000
 )
 
