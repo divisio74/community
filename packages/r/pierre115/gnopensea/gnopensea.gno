@@ -11,7 +11,6 @@ import (
 	"gno.land/p/demo/tokens/grc721"
 	"gno.land/p/nt/avl"
 	"gno.land/p/nt/ufmt"
-	"gno.land/r/pierre115/nftregistry"
 )
 
 var (
