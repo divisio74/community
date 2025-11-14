@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"gno.land/p/demo/tokens/grc721"
-	"gno.land/r/pierre115/nftregistry"
 	"gno.land/p/nt/avl"
 	"gno.land/p/nt/ufmt"
 )
