@@ -39,12 +39,12 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 	}
 
 	// Check if collection is registered in the GLOBAL NFT Registry
-	if !nftregistry8.IsRegistered(nftRealmAddress) {
+	if !nftregistry.IsRegistered(nftRealmAddress) {
 		panic("NFT collection not registered in the global NFT Registry. The collection must call nftregistry.RegisterCollection() first.")
 	}
 
 	// Get NFT getter from the global registry
-	getter, exists := nftregistry8.GetNFTGetter(nftRealmAddress)
+	getter, exists := nftregistry.GetNFTGetter(nftRealmAddress)
 	if !exists {
 		panic("Failed to get NFT getter from registry")
 	}
