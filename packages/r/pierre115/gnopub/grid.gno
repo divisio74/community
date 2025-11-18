@@ -2,10 +2,7 @@ package gnopub
 
 import (
 	"chain/runtime"
-	"strings"
 
-	"gno.land/p/leon/svgbtn"
-	"gno.land/p/moul/txlink"
 	"gno.land/p/nt/ownable"
 	"gno.land/p/nt/ufmt"
 )
@@ -142,21 +139,6 @@ func Reset() string {
 	}
 	grid.Cells = make(map[string]Cell)
 	return "The grid was successfully reset."
-}
-
-func getColorName(color string) string {
-	switch color {
-	case "#f44336":
-		return "Red"
-	case "#2196f3":
-		return "Blue"
-	case "#4caf50":
-		return "Green"
-	case "#ff9800":
-		return "Orange"
-	default:
-		return "White"
-	}
 }
 
 func isAuthorized(addr address) bool {
