@@ -174,7 +174,7 @@ func BuyCell(_ realm, x, y int) string {
 }
 
 // Reset grid (admin only)
-func reset() string {
+func Reset() string {
 	if !isAuthorized(runtime.PreviousRealm().Address()) {
 		panic("unauthorized")
 	}
