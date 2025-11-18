@@ -49,3 +49,62 @@ func Render(path string) string {
 
 	return out
 }
+
+// Render the grid
+func renderGrid() string {
+	out := ""
+
+	// Grid cells
+	for y := 0; y < grid.Height; y++ {
+		for x := 0; x < grid.Width; x++ {
+			key := ufmt.Sprintf("%d,%d", x, y)
+			color := defaultcolor
+			link := defaultlink
+			// If the cell is owned, use its color
+			if cell, ok := grid.Cells[key]; ok {
+				color = cell.Color
+				caller := runtime.PreviousRealm().Address()
+
+				if cell.Url != "" {
+					link = cell.Url
+				}
+
+				// If the cell is owned by someone else, link to their pub if set
+				if cell.Owner != "" && cell.Owner != caller {
+					out += svgbtn.Button(cellSize, cellSize, color, "#333333", cell.Label, link)
+					out += strings.Repeat("&nbsp;", spacingCount)
+					continue
+				}
+			}
+			link = txlink.NewLink("BuyCell").
+				AddArgs("x", ufmt.Sprintf("%d", x), "y", ufmt.Sprintf("%d", y)).
+				URL()
+			out += svgbtn.Button(cellSize, cellSize, color, "#333333", "available", link)
+			out += strings.Repeat("&nbsp;", spacingCount)
+		}
+		out += "\n\n"
+	}
+
+	return out
+}
+
+// Stats of the grid (per cells owners)
+func getStats() string {
+	stats := make(map[address]int)
+	for _, cell := range grid.Cells {
+		if cell.Owner != "" {
+			stats[cell.Owner]++
+		}
+	}
+
+	out := "## Stats 📊:\n"
+	if len(stats) == 0 {
+		out += "No cells used.\n"
+		return out
+	}
+
+	for owner, count := range stats {
+		out += ufmt.Sprintf("- %s: %d cell(s)\n", owner.String(), count)
+	}
+	return out
+}
