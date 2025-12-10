@@ -1,14 +1,14 @@
-package gnopensea
+package gnopendao
 
 import (
 	"strconv"
-
 	"chain"
 	"chain/banker"
 	"chain/runtime"
 	"strings"
 
 	"gno.land/p/demo/tokens/grc721"
+	"gno.land/r/pierre115/nftregistry8"
 	"gno.land/p/nt/avl"
 	"gno.land/p/nt/ufmt"
 )
@@ -21,13 +21,11 @@ var (
 
 	marketplaceFee  = int64(250) // 250 basis points = 2.5%
 	marketplaceAddr = runtime.CurrentRealm().Address()
-	owner           address
-	admins          avl.Tree
+	approvedCollections avl.Tree // Whitelist of approved collections
 )
 
 func init() {
-	owner = runtime.PreviousRealm().Address()
-	admins.Set(owner.String(), true)
+	initDAO()
 }
 
 // CreateListing - List an NFT for sale using the global NFT Registry
@@ -38,13 +36,17 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 		panic("Price not valid")
 	}
 
-	// Check if collection is registered in the GLOBAL NFT Registry
-	if !nftregistry.IsRegistered(nftRealmAddress) {
+	// Check if collection is registered in the GLOBAL NFT Registry (technical check)
+	if !nftregistry8.IsRegistered(nftRealmAddress) {
 		panic("NFT collection not registered in the global NFT Registry. The collection must call nftregistry.RegisterCollection() first.")
+	}
+	// Check if collection is approved by DAO (governance check)
+	if !approvedCollections.Has(nftRealmAddress.String()) {
+		panic("Collection not approved by DAO. A DAO proposal must be created and passed first.")
 	}
 
 	// Get NFT getter from the global registry
-	getter, exists := nftregistry.GetNFTGetter(nftRealmAddress)
+	getter, exists := nftregistry8.GetNFTGetter(nftRealmAddress)
 	if !exists {
 		panic("Failed to get NFT getter from registry")
 	}
@@ -161,7 +163,7 @@ func BuyNFT(_ realm, listingId int) {
 		bnkr.SendCoins(realmAddr, royaltyReceiver, royaltyCoins)
 	}
 
-	// 3. TODO : Marketplace fees remain in contract (withdrawal by admin)
+	// 3. TODO : Marketplace fees remain in contract
 
 	// 4. Refund excess
 	if amount > listing.Price {
@@ -197,7 +199,7 @@ func BuyNFT(_ realm, listingId int) {
 	listings.Set(strconv.Itoa(listingId), listing)
 }
 
-// CancelListing - Cancel a listing
+// CancelListing - Cancel own listing (seller only)
 func CancelListing(_realm, listingId int) {
 	caller := runtime.PreviousRealm().Address()
 
@@ -206,8 +208,10 @@ func CancelListing(_realm, listingId int) {
 		panic("Listing not found")
 	}
 
-	if listing.Seller != caller && !admins.Has(caller.String()) {
-		panic("Only the seller or admins can cancel this listing")
+	// Only seller can cancel their own listing
+	// DAO use ProposeForceCancelListing instead
+	if listing.Seller != caller {
+		panic("Only the seller can cancel this listing. DAO members can create a ProposeForceCancelListing proposal.")
 	}
 
 	if !listing.Active {
@@ -218,73 +222,6 @@ func CancelListing(_realm, listingId int) {
 	listings.Set(strconv.Itoa(listingId), listing)
 }
 
-// BuyNFTDebug - Version debug de BuyNFT
-func BuyNFTDebug(_ realm, listingId int) string {
-	output := "=== BuyNFT Debug ===\n\n"
-
-	// Step 1
-	caller := runtime.OriginCaller()
-	output += ufmt.Sprintf("1. Caller: %s\n", caller.String())
-
-	// Step 2
-	sent := banker.OriginSend()
-	amount := sent.AmountOf("ugnot")
-	output += ufmt.Sprintf("2. Amount sent: %d ugnot\n", amount)
-
-	// Step 3
-	listing := getListing(listingId)
-	if listing == nil {
-		output += "3. ERROR: Listing not found\n"
-		return output
-	}
-	output += ufmt.Sprintf("3. Listing found, price: %d\n", listing.Price)
-	output += ufmt.Sprintf("   Seller: %s\n", listing.Seller.String())
-	output += ufmt.Sprintf("   Active: %t\n", listing.Active)
-
-	// Step 4
-	if !listing.Active {
-		output += "4. ERROR: Listing not active\n"
-		return output
-	}
-	output += "4. Listing is active\n"
-
-	// Step 5
-	if amount < listing.Price {
-		output += ufmt.Sprintf("5. ERROR: Insufficient amount (sent: %d, need: %d)\n", amount, listing.Price)
-		return output
-	}
-	output += "5. Payment verified\n"
-
-	// Step 6
-	if caller == listing.Seller {
-		output += "6. ERROR: Cannot buy your own NFT\n"
-		return output
-	}
-	output += "6. Buyer is not seller\n"
-
-	// Step 7
-	nftInstance := listing.NFTGetter()
-	output += "7. NFT instance retrieved\n"
-
-	// Step 8
-	currentOwner, err := nftInstance.OwnerOf(listing.TokenId)
-	if err != nil {
-		output += ufmt.Sprintf("8. ERROR: %s\n", err.Error())
-		return output
-	}
-	output += ufmt.Sprintf("8. Current owner: %s\n", currentOwner.String())
-
-	// Step 9
-	if currentOwner != listing.Seller {
-		output += "9. ERROR: Seller no longer owns NFT\n"
-		return output
-	}
-	output += "9. Seller still owns NFT\n"
-
-	output += "\n✅ All checks passed - ready to execute transfer\n"
-
-	return output
-}
 
 // UpdatePrice - Update listing price
 func UpdatePrice(_ realm, listingId int, newPrice int64) {

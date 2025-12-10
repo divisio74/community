@@ -1,4 +1,4 @@
-package nftregistry
+package daoregistry
 
 import (
 	"chain/runtime"
@@ -24,15 +24,12 @@ type CollectionInfo struct {
 
 var (
 	collections     avl.Tree
-	admins          avl.Tree
 	categoriesIndex avl.Tree
-	owner           address
 	registrationFee int64 = 1000000
 )
 
 func init() {
-	owner = runtime.PreviousRealm().Address()
-	admins.Set(owner.String(), true)
+	initRegistryDAO()
 }
 
 // RegisterCollection - Register a new NFT collection
@@ -141,44 +138,6 @@ func GetTokenMetadata(collectionAddr address, tokenId grc721.TokenID) (grc721.Me
 	return metadataCollection.TokenMetadata(tokenId)
 }
 
-// VerifyCollection - Mark a collection as verified
-func VerifyCollection(collectionAddr address) {
-	caller := runtime.PreviousRealm().Address()
-
-	if !isAdmin(caller) {
-		panic("Only admins can verify collections")
-	}
-
-	info := GetCollection(collectionAddr)
-	if info == nil {
-		panic("Collection not found")
-	}
-
-	if !info.Verified {
-		info.Verified = true
-		collections.Set(collectionAddr.String(), info)
-	}
-}
-
-// UnverifyCollection - Remove verified status from a collection
-func UnverifyCollection(collectionAddr address) {
-	caller := runtime.PreviousRealm().Address()
-
-	if !isAdmin(caller) {
-		panic("Only admins can unverify collections")
-	}
-
-	info := GetCollection(collectionAddr)
-	if info == nil {
-		panic("Collection not found")
-	}
-
-	if info.Verified {
-		info.Verified = false
-		collections.Set(collectionAddr.String(), info)
-	}
-}
-
 // UpdateCollectionInfo - Update collection metadata
 func UpdateCollectionInfo(category, description, externalURL string) {
 	caller := runtime.PreviousRealm().Address()
@@ -192,10 +151,4 @@ func UpdateCollectionInfo(category, description, externalURL string) {
 	info.Description = description
 	info.ExternalURL = externalURL
 	collections.Set(caller.String(), info)
-}
-
-// isAdmin - Check if an address is an admin
-func isAdmin(addr address) bool {
-	_, exists := admins.Get(addr.String())
-	return exists
 }

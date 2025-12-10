@@ -1,4 +1,4 @@
-package gnopensea
+package gnopendao
 
 import (
 	"testing"
