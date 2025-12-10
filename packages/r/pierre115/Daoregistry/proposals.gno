@@ -1,8 +1,8 @@
 package daoregistry
 
 import (
-	"time"
 	"errors"
+	"time"
 
 	"gno.land/p/nt/commondao"
 	"gno.land/p/nt/ufmt"

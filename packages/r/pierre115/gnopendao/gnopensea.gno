@@ -1,16 +1,16 @@
 package gnopendao
 
 import (
-	"strconv"
 	"chain"
 	"chain/banker"
 	"chain/runtime"
+	"strconv"
 	"strings"
 
 	"gno.land/p/demo/tokens/grc721"
-	"gno.land/r/pierre115/nftregistry8"
 	"gno.land/p/nt/avl"
 	"gno.land/p/nt/ufmt"
+	"gno.land/r/pierre115/nftregistry8"
 )
 
 var (
@@ -19,8 +19,8 @@ var (
 	nextListingId = 1
 	nextSaleId    = 1
 
-	marketplaceFee  = int64(250) // 250 basis points = 2.5%
-	marketplaceAddr = runtime.CurrentRealm().Address()
+	marketplaceFee      = int64(250) // 250 basis points = 2.5%
+	marketplaceAddr     = runtime.CurrentRealm().Address()
 	approvedCollections avl.Tree // Whitelist of approved collections
 )
 
@@ -221,7 +221,6 @@ func CancelListing(_realm, listingId int) {
 	listing.Active = false
 	listings.Set(strconv.Itoa(listingId), listing)
 }
-
 
 // UpdatePrice - Update listing price
 func UpdatePrice(_ realm, listingId int, newPrice int64) {

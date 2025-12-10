@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"strings"
 
-	"gno.land/p/nt/commondao"
-	"gno.land/p/nt/ufmt"
 	"gno.land/p/leon/svgbtn"
 	"gno.land/p/moul/txlink"
+	"gno.land/p/nt/commondao"
+	"gno.land/p/nt/ufmt"
 )
 
 func Render(path string) string {

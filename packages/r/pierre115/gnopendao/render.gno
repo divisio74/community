@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"strings"
 
-	"gno.land/p/nt/commondao"
-	"gno.land/p/nt/ufmt"
 	"gno.land/p/leon/svgbtn"
 	"gno.land/p/moul/txlink"
+	"gno.land/p/nt/commondao"
+	"gno.land/p/nt/ufmt"
 )
 
 // ============= RENDER =============
@@ -344,7 +344,6 @@ func renderProposal(proposalID uint64) string {
 			URL()
 		output += svgbtn.SuccessButton(100, 30, "YES", linkyes) + "\n\n"
 
-
 		// Vote NO button
 		linkno := txlink.NewLink("Vote").
 			AddArgs("proposalID", ufmt.Sprintf("%d", proposalID)).
@@ -358,7 +357,6 @@ func renderProposal(proposalID uint64) string {
 
 	return output
 }
-
 
 // ============= ARCHIVE RENDER FUNCTIONS =============
 

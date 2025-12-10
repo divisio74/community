@@ -1,23 +1,23 @@
 package gnopendao
 
 import (
-	"time"
-	"errors"
+	"chain"
 	"chain/banker"
 	"chain/runtime"
-	"chain"
+	"errors"
 	"strconv"
+	"time"
 
 	"gno.land/p/nt/commondao"
 	"gno.land/p/nt/ufmt"
 )
 
 const (
-	PROPOSAL_TYPE_APPROVE_COLLECTION    = "approve_collection"
-	PROPOSAL_TYPE_REMOVE_COLLECTION     = "remove_collection"
-	PROPOSAL_TYPE_UPDATE_FEES           = "update_fees"
-	PROPOSAL_TYPE_WITHDRAW_TREASURY     = "withdraw_treasury"
-	PROPOSAL_TYPE_FORCE_CANCEL_LISTING  = "force_cancel_listing"
+	PROPOSAL_TYPE_APPROVE_COLLECTION   = "approve_collection"
+	PROPOSAL_TYPE_REMOVE_COLLECTION    = "remove_collection"
+	PROPOSAL_TYPE_UPDATE_FEES          = "update_fees"
+	PROPOSAL_TYPE_WITHDRAW_TREASURY    = "withdraw_treasury"
+	PROPOSAL_TYPE_FORCE_CANCEL_LISTING = "force_cancel_listing"
 
 	VOTING_PERIOD = 10 * time.Minute
 	QUORUM        = commondao.QuorumOneThird // 33%
@@ -46,12 +46,12 @@ func tallyVotes(votes commondao.ReadonlyVotingRecord, members commondao.MemberSe
 
 // CollectionProposal - Proposal to approve or remove a collection
 type CollectionProposal struct {
-	proposalType    string
-	collectionAddr  address
-	collectionName  string
-	reason          string
-	approved        bool
-	executed        bool
+	proposalType   string
+	collectionAddr address
+	collectionName string
+	reason         string
+	approved       bool
+	executed       bool
 }
 
 func newCollectionProposal(propType string, addr address, name string, reason string) *CollectionProposal {
