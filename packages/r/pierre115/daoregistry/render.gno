@@ -1,4 +1,4 @@
-package daoregistry
+package daoregistry3
 
 import (
 	"strconv"

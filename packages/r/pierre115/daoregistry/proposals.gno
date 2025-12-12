@@ -1,4 +1,4 @@
-package daoregistry
+package daoregistry3
 
 import (
 	"errors"
@@ -55,7 +55,7 @@ func (p *VerifyCollectionProposal) VotingPeriod() time.Duration {
 func (p *VerifyCollectionProposal) Tally(ctx commondao.VotingContext) (bool, error) {
 	votes := ctx.VotingRecord
 	members := ctx.Members
-	
+
 	yesVotes := 0
 	noVotes := 0
 
@@ -135,7 +135,7 @@ func (p *UnverifyCollectionProposal) VotingPeriod() time.Duration {
 func (p *UnverifyCollectionProposal) Tally(ctx commondao.VotingContext) (bool, error) {
 	votes := ctx.VotingRecord
 	members := ctx.Members
-	
+
 	yesVotes := 0
 	noVotes := 0
 

@@ -1,7 +1,7 @@
-package daoregistry
+package daoregistry3
 
 import (
-	"chain/banker"
+	//"chain/banker"
 	"chain/runtime"
 
 	"gno.land/p/nt/commondao"
@@ -12,7 +12,7 @@ var (
 )
 
 const (
-	MIN_STAKE_UGNOT = 10_000_000 // 10 GNOT minimum to join registry DAO
+	MIN_STAKE_UGNOT = 0 // 0 GNOT minimum to join registry DAO
 )
 
 func initRegistryDAO() {
@@ -29,12 +29,12 @@ func initRegistryDAO() {
 // JoinRegistryDAO - Join the NFT Registry DAO by staking GNOT
 func JoinRegistryDAO(_ realm) string {
 	caller := runtime.PreviousRealm().Address()
-	sent := banker.OriginSend()
+	//sent := banker.OriginSend()
 
-	amount := sent.AmountOf("ugnot")
-	if amount < MIN_STAKE_UGNOT {
-		panic("minimum 10 GNOT required to join Registry DAO")
-	}
+	//amount := sent.AmountOf("ugnot")
+	//if amount < MIN_STAKE_UGNOT {
+	//	panic("minimum 10 GNOT required to join Registry DAO")
+	//}
 
 	if registryDAO.Members().Has(caller) {
 		panic("already a DAO member")
