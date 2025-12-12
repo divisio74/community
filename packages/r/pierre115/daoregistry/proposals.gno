@@ -16,27 +16,6 @@ const (
 	REGISTRY_QUORUM        = commondao.QuorumOneThird // 33%
 )
 
-// Helper function to simplify tally logic
-func tallyRegistryVotes(votes commondao.ReadonlyVotingRecord, members commondao.MemberSet) (yesVotes, noVotes int, passes bool) {
-	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
-		if v.Choice == commondao.ChoiceYes {
-			yesVotes++
-		} else if v.Choice == commondao.ChoiceNo {
-			noVotes++
-		}
-		return false
-	})
-
-	// Check quorum
-	if !commondao.IsQuorumReached(REGISTRY_QUORUM, votes, members) {
-		return yesVotes, noVotes, false
-	}
-
-	// Simple majority
-	passes = yesVotes > noVotes
-	return yesVotes, noVotes, passes
-}
-
 // VerifyCollectionProposal - Proposal to verify a collection
 type VerifyCollectionProposal struct {
 	collectionAddr address
@@ -73,18 +52,31 @@ func (p *VerifyCollectionProposal) VotingPeriod() time.Duration {
 	return REGISTRY_VOTING_PERIOD
 }
 
-func (p *VerifyCollectionProposal) Tally(
-	votes commondao.ReadonlyVotingRecord,
-	members commondao.MemberSet,
-) (bool, error) {
-	_, _, passes := tallyRegistryVotes(votes, members)
-	p.approved = passes
+func (p *VerifyCollectionProposal) Tally(ctx commondao.VotingContext) (bool, error) {
+	votes := ctx.VotingRecord
+	members := ctx.Members
+	
+	yesVotes := 0
+	noVotes := 0
 
-	if !passes && !commondao.IsQuorumReached(REGISTRY_QUORUM, votes, members) {
+	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
+		if v.Choice == commondao.ChoiceYes {
+			yesVotes++
+		} else if v.Choice == commondao.ChoiceNo {
+			noVotes++
+		}
+		return false
+	})
+
+	// Check quorum
+	if !commondao.IsQuorumReached(REGISTRY_QUORUM, votes, members) {
+		p.approved = false
 		return false, commondao.ErrNoQuorum
 	}
 
-	return passes, nil
+	// Simple majority
+	p.approved = yesVotes > noVotes
+	return p.approved, nil
 }
 
 func (p *VerifyCollectionProposal) Execute(realm) error {
@@ -140,18 +132,31 @@ func (p *UnverifyCollectionProposal) VotingPeriod() time.Duration {
 	return REGISTRY_VOTING_PERIOD
 }
 
-func (p *UnverifyCollectionProposal) Tally(
-	votes commondao.ReadonlyVotingRecord,
-	members commondao.MemberSet,
-) (bool, error) {
-	_, _, passes := tallyRegistryVotes(votes, members)
-	p.approved = passes
+func (p *UnverifyCollectionProposal) Tally(ctx commondao.VotingContext) (bool, error) {
+	votes := ctx.VotingRecord
+	members := ctx.Members
+	
+	yesVotes := 0
+	noVotes := 0
 
-	if !passes && !commondao.IsQuorumReached(REGISTRY_QUORUM, votes, members) {
+	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
+		if v.Choice == commondao.ChoiceYes {
+			yesVotes++
+		} else if v.Choice == commondao.ChoiceNo {
+			noVotes++
+		}
+		return false
+	})
+
+	// Check quorum
+	if !commondao.IsQuorumReached(REGISTRY_QUORUM, votes, members) {
+		p.approved = false
 		return false, commondao.ErrNoQuorum
 	}
 
-	return passes, nil
+	// Simple majority
+	p.approved = yesVotes > noVotes
+	return p.approved, nil
 }
 
 func (p *UnverifyCollectionProposal) Execute(realm) error {

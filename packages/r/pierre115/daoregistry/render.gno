@@ -232,7 +232,7 @@ func renderProposal(proposalID uint64) string {
 	output += ufmt.Sprintf("- **Total votes:** %d\n", totalVotes)
 
 	totalMembers := GetTotalRegistryMembers()
-	quorumRequired := (totalMembers * REGISTRY_QUORUM) / 100
+	quorumRequired := int(float64(totalMembers) * REGISTRY_QUORUM)
 	output += ufmt.Sprintf("- **Quorum required:** %d/%d votes\n\n", totalVotes, quorumRequired)
 
 	if proposal.HasVotingDeadlinePassed() {
@@ -355,7 +355,7 @@ func renderArchivedProposal(proposalID uint64) string {
 	output += ufmt.Sprintf("- **Total votes:** %d\n", totalVotes)
 
 	totalMembers := GetTotalRegistryMembers()
-	quorumRequired := (totalMembers * REGISTRY_QUORUM) / 100
+	quorumRequired := int(float64(totalMembers) * REGISTRY_QUORUM)
 	output += ufmt.Sprintf("- **Quorum required:** %d/%d votes\n\n", totalVotes, quorumRequired)
 
 	statusLabel := "PASSED"

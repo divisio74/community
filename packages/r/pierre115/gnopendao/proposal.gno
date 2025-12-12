@@ -23,27 +23,6 @@ const (
 	QUORUM        = commondao.QuorumOneThird // 33%
 )
 
-// Helper function to simplify tally logic
-func tallyVotes(votes commondao.ReadonlyVotingRecord, members commondao.MemberSet) (yesVotes, noVotes int, passes bool) {
-	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
-		if v.Choice == commondao.ChoiceYes {
-			yesVotes++
-		} else if v.Choice == commondao.ChoiceNo {
-			noVotes++
-		}
-		return false
-	})
-
-	// Check quorum
-	if !commondao.IsQuorumReached(QUORUM, votes, members) {
-		return yesVotes, noVotes, false
-	}
-
-	// Simple majority
-	passes = yesVotes > noVotes
-	return yesVotes, noVotes, passes
-}
-
 // CollectionProposal - Proposal to approve or remove a collection
 type CollectionProposal struct {
 	proposalType   string
@@ -86,18 +65,31 @@ func (p *CollectionProposal) VotingPeriod() time.Duration {
 	return VOTING_PERIOD
 }
 
-func (p *CollectionProposal) Tally(
-	votes commondao.ReadonlyVotingRecord,
-	members commondao.MemberSet,
-) (bool, error) {
-	_, _, passes := tallyVotes(votes, members)
-	p.approved = passes
+func (p *CollectionProposal) Tally(ctx commondao.VotingContext) (bool, error) {
+	votes := ctx.VotingRecord
+	members := ctx.Members
 
-	if !passes && !commondao.IsQuorumReached(QUORUM, votes, members) {
+	yesVotes := 0
+	noVotes := 0
+
+	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
+		if v.Choice == commondao.ChoiceYes {
+			yesVotes++
+		} else if v.Choice == commondao.ChoiceNo {
+			noVotes++
+		}
+		return false
+	})
+
+	// Check quorum
+	if !commondao.IsQuorumReached(QUORUM, votes, members) {
+		p.approved = false
 		return false, commondao.ErrNoQuorum
 	}
 
-	return passes, nil
+	// Simple majority
+	p.approved = yesVotes > noVotes
+	return p.approved, nil
 }
 
 func (p *CollectionProposal) Execute(realm) error {
@@ -152,18 +144,31 @@ func (p *FeesProposal) VotingPeriod() time.Duration {
 	return VOTING_PERIOD
 }
 
-func (p *FeesProposal) Tally(
-	votes commondao.ReadonlyVotingRecord,
-	members commondao.MemberSet,
-) (bool, error) {
-	_, _, passes := tallyVotes(votes, members)
-	p.approved = passes
+func (p *FeesProposal) Tally(ctx commondao.VotingContext) (bool, error) {
+	votes := ctx.VotingRecord
+	members := ctx.Members
 
-	if !passes && !commondao.IsQuorumReached(QUORUM, votes, members) {
+	yesVotes := 0
+	noVotes := 0
+
+	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
+		if v.Choice == commondao.ChoiceYes {
+			yesVotes++
+		} else if v.Choice == commondao.ChoiceNo {
+			noVotes++
+		}
+		return false
+	})
+
+	// Check quorum
+	if !commondao.IsQuorumReached(QUORUM, votes, members) {
+		p.approved = false
 		return false, commondao.ErrNoQuorum
 	}
 
-	return passes, nil
+	// Simple majority
+	p.approved = yesVotes > noVotes
+	return p.approved, nil
 }
 
 func (p *FeesProposal) Execute(realm) error {
@@ -215,18 +220,31 @@ func (p *TreasuryProposal) VotingPeriod() time.Duration {
 	return VOTING_PERIOD
 }
 
-func (p *TreasuryProposal) Tally(
-	votes commondao.ReadonlyVotingRecord,
-	members commondao.MemberSet,
-) (bool, error) {
-	_, _, passes := tallyVotes(votes, members)
-	p.approved = passes
+func (p *TreasuryProposal) Tally(ctx commondao.VotingContext) (bool, error) {
+	votes := ctx.VotingRecord
+	members := ctx.Members
 
-	if !passes && !commondao.IsQuorumReached(QUORUM, votes, members) {
+	yesVotes := 0
+	noVotes := 0
+
+	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
+		if v.Choice == commondao.ChoiceYes {
+			yesVotes++
+		} else if v.Choice == commondao.ChoiceNo {
+			noVotes++
+		}
+		return false
+	})
+
+	// Check quorum
+	if !commondao.IsQuorumReached(QUORUM, votes, members) {
+		p.approved = false
 		return false, commondao.ErrNoQuorum
 	}
 
-	return passes, nil
+	// Simple majority
+	p.approved = yesVotes > noVotes
+	return p.approved, nil
 }
 
 func (p *TreasuryProposal) Execute(realm) error {
@@ -294,18 +312,31 @@ func (p *ForceCancelListingProposal) VotingPeriod() time.Duration {
 	return VOTING_PERIOD
 }
 
-func (p *ForceCancelListingProposal) Tally(
-	votes commondao.ReadonlyVotingRecord,
-	members commondao.MemberSet,
-) (bool, error) {
-	_, _, passes := tallyVotes(votes, members)
-	p.approved = passes
+func (p *ForceCancelListingProposal) Tally(ctx commondao.VotingContext) (bool, error) {
+	votes := ctx.VotingRecord
+	members := ctx.Members
 
-	if !passes && !commondao.IsQuorumReached(QUORUM, votes, members) {
+	yesVotes := 0
+	noVotes := 0
+
+	votes.Iterate(0, votes.Size(), false, func(v commondao.Vote) bool {
+		if v.Choice == commondao.ChoiceYes {
+			yesVotes++
+		} else if v.Choice == commondao.ChoiceNo {
+			noVotes++
+		}
+		return false
+	})
+
+	// Check quorum
+	if !commondao.IsQuorumReached(QUORUM, votes, members) {
+		p.approved = false
 		return false, commondao.ErrNoQuorum
 	}
 
-	return passes, nil
+	// Simple majority
+	p.approved = yesVotes > noVotes
+	return p.approved, nil
 }
 
 func (p *ForceCancelListingProposal) Execute(realm) error {
