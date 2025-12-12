@@ -1,4 +1,4 @@
-package gnopendao
+package gnopendao2
 
 import (
 	"chain"

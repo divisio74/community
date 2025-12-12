@@ -1,4 +1,4 @@
-package gnopendao
+package gnopendao2
 
 import (
 	//"chain/banker"
@@ -12,7 +12,7 @@ var (
 )
 
 const (
-	MIN_STAKE_UGNOT = 1_000_000 // 1 GNOT minimum to join DAO
+	MIN_STAKE_UGNOT = 0 // 0 GNOT minimum to join DAO
 )
 
 func initDAO() {

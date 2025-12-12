@@ -1,4 +1,4 @@
-package gnopendao
+package gnopendao2
 
 import (
 	"chain/runtime"
@@ -128,7 +128,12 @@ func ProposeForceCancelListing(_ realm, listingId int, reason string) uint64 {
 func Vote(_ realm, proposalID uint64, choice string) string {
 	caller := runtime.PreviousRealm().Address()
 
-	if choice != "yes" && choice != "no" {
+	var voteChoice commondao.VoteChoice
+	if choice == "yes" {
+		voteChoice = commondao.ChoiceYes
+	} else if choice == "no" {
+		voteChoice = commondao.ChoiceNo
+	} else {
 		panic("choice must be 'yes' or 'no'")
 	}
 
@@ -136,7 +141,7 @@ func Vote(_ realm, proposalID uint64, choice string) string {
 	err := marketplaceDAO.Vote(
 		caller,
 		proposalID,
-		commondao.VoteChoice(choice),
+		voteChoice,
 		"", // reason (optional)
 	)
 	if err != nil {

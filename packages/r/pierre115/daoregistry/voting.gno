@@ -1,4 +1,4 @@
-package daoregistry3
+package daoregistry4
 
 import (
 	"chain/runtime"
@@ -61,16 +61,21 @@ func ProposeUnverifyCollection(_ realm, collectionAddr address, collectionName s
 	return proposal.ID()
 }
 
-// VoteRegistry - Vote on a registry proposal
+// VoteRegistry - Vote on a registry proposal yes/no
 func VoteRegistry(_ realm, proposalID uint64, choice string) string {
 	caller := runtime.PreviousRealm().Address()
 
-	if choice != "yes" && choice != "no" {
+	var voteChoice commondao.VoteChoice
+	if choice == "yes" {
+		voteChoice = commondao.ChoiceYes
+	} else if choice == "no" {
+		voteChoice = commondao.ChoiceNo
+	} else {
 		panic("choice must be 'yes' or 'no'")
 	}
 
 	// Use DAO's Vote method - handles all validations automatically
-	err := registryDAO.Vote(caller, proposalID, commondao.VoteChoice(choice), "")
+	err := registryDAO.Vote(caller, proposalID, voteChoice, "")
 	if err != nil {
 		panic("vote failed: " + err.Error())
 	}

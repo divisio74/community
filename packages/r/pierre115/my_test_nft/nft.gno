@@ -1,4 +1,4 @@
-package mynft3
+package mynft5
 
 import (
 	"strconv"
@@ -6,7 +6,7 @@ import (
 
 	"gno.land/p/demo/tokens/grc721"
 	"gno.land/p/nt/ufmt"
-	"gno.land/r/pierre115/daoregistry3"
+	"gno.land/r/pierre115/daoregistry4"
 )
 
 type NFTCollection interface {
@@ -27,7 +27,7 @@ func init() {
 
 // Register registers this collection on the NFT registry
 func Register(_ realm) {
-	daoregistry3.RegisterCollection(
+	daoregistry4.RegisterCollection(
 		myRealmAddr,
 		"Test NFT Collection",
 		"TEST",
@@ -52,6 +52,7 @@ func MintNFT(_ realm) int {
 	return nextTokenId - 1
 }
 
+// SetApprovalForAll - Approve or revoke operator to manage all caller's NFTs: true/false
 func SetApprovalForAll(_ realm, operator address, approved bool) {
 	err := nft.SetApprovalForAll(operator, approved)
 	if err != nil {
