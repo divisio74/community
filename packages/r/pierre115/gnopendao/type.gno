@@ -1,4 +1,4 @@
-package gnopendao2
+package gnopendao
 
 import (
 	"gno.land/p/demo/tokens/grc721"

@@ -1,4 +1,4 @@
-package daoregistry4
+package registrydao
 
 import (
 	"strconv"
@@ -62,14 +62,14 @@ func renderHome() string {
 	activeProposals := registryDAO.ActiveProposals()
 	if activeProposals.Size() > 0 {
 		output += ufmt.Sprintf("**Active Proposals:** %d\n\n", activeProposals.Size())
-		output += "[View all proposals](/r/pierre115/daoregistry:proposals)\n\n"
+		output += "[View all proposals](/r/pierre115/registrydao:proposals)\n\n"
 	} else {
 		output += "**Active Proposals:** 0\n\n"
-		output += "[View proposals](/r/pierre115/daoregistry:proposals) | "
+		output += "[View proposals](/r/pierre115/registrydao:proposals) | "
 	}
 
 	finishedProposals := registryDAO.FinishedProposals()
-	output += ufmt.Sprintf("[View archive (%d)](/r/pierre115/daoregistry:archive)\n\n", finishedProposals.Size())
+	output += ufmt.Sprintf("[View archive (%d)](/r/pierre115/registrydao:archive)\n\n", finishedProposals.Size())
 	output += "---\n\n"
 
 	// Vote Join button
@@ -106,7 +106,7 @@ func renderCollectionPreview(info *CollectionInfo) string {
 	}
 
 	output += ufmt.Sprintf("Category: %s\n\n", info.Category)
-	output += ufmt.Sprintf("[View details](/r/pierre115/daoregistry:collection/%s)\n\n", info.Address.String())
+	output += ufmt.Sprintf("[View details](/r/pierre115/registrydao:collection/%s)\n\n", info.Address.String())
 	output += "---\n\n"
 
 	return output
@@ -140,7 +140,7 @@ func renderCollection(addr address) string {
 	output += ufmt.Sprintf("**Registered at block:** %d\n\n", info.RegisteredAt)
 	output += ufmt.Sprintf("**Supports onchain metadata:** %t\n\n", info.SupportsMetadata)
 
-	output += "[Back to registry](/r/pierre115/daoregistry)\n"
+	output += "[Back to registry](/r/pierre115/registrydao)\n"
 
 	return output
 }
@@ -155,7 +155,7 @@ func renderProposals() string {
 		output += "DAO members can create proposals to:\n"
 		output += "- Verify collections\n"
 		output += "- Unverify collections\n\n"
-		output += "[Back](/r/pierre115/daoregistry)\n"
+		output += "[Back](/r/pierre115/registrydao)\n"
 		return output
 	}
 
@@ -164,7 +164,7 @@ func renderProposals() string {
 		return false
 	})
 
-	output += "\n[View archive](/r/pierre115/daoregistry:archive) | [Back](/r/pierre115/daoregistry)\n"
+	output += "\n[View archive](/r/pierre115/registrydao:archive) | [Back](/r/pierre115/registrydao)\n"
 
 	return output
 }
@@ -193,7 +193,7 @@ func renderProposalPreview(p *commondao.Proposal) string {
 		output += "Status: Voting open\n\n"
 	}
 
-	output += ufmt.Sprintf("[View and Vote](/r/pierre115/daoregistry:proposal/%d)\n\n", p.ID())
+	output += ufmt.Sprintf("[View and Vote](/r/pierre115/registrydao:proposal/%d)\n\n", p.ID())
 	output += "---\n\n"
 
 	return output
@@ -259,7 +259,7 @@ func renderProposal(proposalID uint64) string {
 	}
 
 	output += "---\n\n"
-	output += "[Back to proposals](/r/pierre115/daoregistry:proposals) | [Home](/r/pierre115/daoregistry)\n"
+	output += "[Back to proposals](/r/pierre115/registrydao:proposals) | [Home](/r/pierre115/registrydao)\n"
 
 	return output
 }
@@ -271,7 +271,7 @@ func renderArchive() string {
 
 	if finishedProposals.Size() == 0 {
 		output += "No finished proposals yet.\n\n"
-		output += "[Back](/r/pierre115/daoregistry)\n"
+		output += "[Back](/r/pierre115/registrydao)\n"
 		return output
 	}
 
@@ -283,7 +283,7 @@ func renderArchive() string {
 		return false
 	})
 
-	output += "\n[Back](/r/pierre115/daoregistry)\n"
+	output += "\n[Back](/r/pierre115/registrydao)\n"
 
 	return output
 }
@@ -316,7 +316,7 @@ func renderArchivedProposalPreview(p *commondao.Proposal) string {
 		output += ufmt.Sprintf("**Reason:** %s\n\n", p.StatusReason())
 	}
 
-	output += ufmt.Sprintf("[View details](/r/pierre115/daoregistry:archived/%d)\n\n", p.ID())
+	output += ufmt.Sprintf("[View details](/r/pierre115/registrydao:archived/%d)\n\n", p.ID())
 	output += "---\n\n"
 
 	return output
@@ -371,7 +371,7 @@ func renderArchivedProposal(proposalID uint64) string {
 	output += ufmt.Sprintf("**Voting Ended:** %s\n\n", proposal.VotingDeadline().Format("2006-01-02 15:04:05"))
 
 	output += "---\n\n"
-	output += "[Back to archive](/r/pierre115/daoregistry:archive) | [Home](/r/pierre115/daoregistry)\n"
+	output += "[Back to archive](/r/pierre115/registrydao:archive) | [Home](/r/pierre115/registrydao)\n"
 
 	return output
 }

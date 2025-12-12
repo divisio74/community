@@ -1,4 +1,4 @@
-package gnopendao2
+package gnopendao
 
 import (
 	"strconv"
@@ -62,7 +62,7 @@ func renderHome() string {
 	output += "Compatible **GRC-721** + **GRC-2981** (Automatic Royalties)\n\n"
 	output += "---\n\n"
 	output += ufmt.Sprintf("**Marketplace Address:** %s\n\n", marketplaceAddr.String())
-	output += "[View detailed statistics](/r/pierre115/gnopendao2:stats)\n\n"
+	output += "[View detailed statistics](/r/pierre115/gnopendao:stats)\n\n"
 	output += "---\n\n"
 
 	// DAO Section
@@ -72,14 +72,14 @@ func renderHome() string {
 	activeProposals := marketplaceDAO.ActiveProposals()
 	if activeProposals.Size() > 0 {
 		output += ufmt.Sprintf("**Active Proposals:** %d\n\n", activeProposals.Size())
-		output += "[View all proposals](/r/pierre115/gnopendao2:proposals)\n\n"
+		output += "[View all proposals](/r/pierre115/gnopendao:proposals)\n\n"
 	} else {
 		output += "**Active Proposals:** 0\n\n"
 		output += "*No active proposals*\n\n"
 	}
 
 	finishedProposals := marketplaceDAO.FinishedProposals()
-	output += ufmt.Sprintf("[View archive (%d)](/r/pierre115/gnopendao2:archive)\n\n", finishedProposals.Size())
+	output += ufmt.Sprintf("[View archive (%d)](/r/pierre115/gnopendao:archive)\n\n", finishedProposals.Size())
 
 	// Vote Join button
 	linkjoin := txlink.NewLink("JoinDAO").
@@ -125,7 +125,7 @@ func renderListingPreview(listing *Listing) string {
 	output += ufmt.Sprintf("**Market Fees:** %s\n\n", formatPrice(marketFee))
 	output += ufmt.Sprintf("**Royalty Address:** %s\n\n", royaltyAddr.String())
 	output += ufmt.Sprintf("**Marketplace Address:** %s\n\n", marketplaceAddr.String())
-	output += ufmt.Sprintf("[View details](/r/pierre115/gnopendao2:listing/%d)\n\n", listing.ListingId)
+	output += ufmt.Sprintf("[View details](/r/pierre115/gnopendao:listing/%d)\n\n", listing.ListingId)
 	output += "---\n\n"
 	return output
 }
@@ -172,7 +172,7 @@ func renderListing(listingId int) string {
 		output += "## Purchase\n\n"
 		output += "```bash\n"
 		output += "gnokey maketx call \\\n"
-		output += "  -pkgpath \"gno.land/r/pierre115/gnopendao2\" \\\n"
+		output += "  -pkgpath \"gno.land/r/pierre115/gnopendao\" \\\n"
 		output += "  -func \"BuyNFT\" \\\n"
 		output += ufmt.Sprintf("  -args \"%d\" \\\n", listingId)
 		output += ufmt.Sprintf("  -send \"%dugnot\" \\\n", listing.Price)
@@ -180,7 +180,7 @@ func renderListing(listingId int) string {
 		output += "```\n"
 	}
 
-	output += "\n[← Back](/r/pierre115/gnopendao2)\n"
+	output += "\n[← Back](/r/pierre115/gnopendao)\n"
 
 	return output
 }
@@ -231,7 +231,7 @@ func renderStats() string {
 		output += ufmt.Sprintf("**Average price:** %s\n\n", formatPrice(avgPrice))
 	}
 
-	output += "\n[← Back](/r/pierre115/gnopendao2)\n"
+	output += "\n[← Back](/r/pierre115/gnopendao)\n"
 
 	return output
 }
@@ -249,7 +249,7 @@ func renderProposals() string {
 		output += "- Approve new NFT collections\n"
 		output += "- Remove existing collections\n"
 		output += "- Update marketplace fees\n\n"
-		output += "[← Back](/r/pierre115/gnopendao2)\n"
+		output += "[← Back](/r/pierre115/gnopendao)\n"
 		return output
 	}
 
@@ -258,7 +258,7 @@ func renderProposals() string {
 		return false
 	})
 
-	output += "\n[← Back](/r/pierre115/gnopendao2)\n"
+	output += "\n[← Back](/r/pierre115/gnopendao)\n"
 
 	return output
 }
@@ -287,7 +287,7 @@ func renderProposalPreview(p *commondao.Proposal) string {
 		output += "✅ **Voting open**\n\n"
 	}
 
-	output += ufmt.Sprintf("[View & Vote](/r/pierre115/gnopendao2:proposal/%d)\n\n", p.ID())
+	output += ufmt.Sprintf("[View & Vote](/r/pierre115/gnopendao:proposal/%d)\n\n", p.ID())
 	output += "---\n\n"
 
 	return output
@@ -353,7 +353,7 @@ func renderProposal(proposalID uint64) string {
 	}
 
 	output += "---\n\n"
-	output += "[← Back to proposals](/r/pierre115/gnopendao2:proposals) | [← Home](/r/pierre115/gnopendao2)\n"
+	output += "[← Back to proposals](/r/pierre115/gnopendao:proposals) | [← Home](/r/pierre115/gnopendao)\n"
 
 	return output
 }
@@ -367,7 +367,7 @@ func renderArchive() string {
 
 	if finishedProposals.Size() == 0 {
 		output += "*No finished proposals yet*\n\n"
-		output += "[← Back](/r/pierre115/gnopendao2)\n"
+		output += "[← Back](/r/pierre115/gnopendao)\n"
 		return output
 	}
 
@@ -379,7 +379,7 @@ func renderArchive() string {
 		return false
 	})
 
-	output += "\n[← Back](/r/pierre115/gnopendao2)\n"
+	output += "\n[← Back](/r/pierre115/gnopendao)\n"
 
 	return output
 }
@@ -411,7 +411,7 @@ func renderArchivedProposalPreview(p *commondao.Proposal) string {
 		output += ufmt.Sprintf("**Reason:** %s\n\n", p.StatusReason())
 	}
 
-	output += ufmt.Sprintf("[View details](/r/pierre115/gnopendao2:archived/%d)\n\n", p.ID())
+	output += ufmt.Sprintf("[View details](/r/pierre115/gnopendao:archived/%d)\n\n", p.ID())
 	output += "---\n\n"
 
 	return output
@@ -466,7 +466,7 @@ func renderArchivedProposal(proposalID uint64) string {
 	output += ufmt.Sprintf("**Voting Ended:** %s\n\n", proposal.VotingDeadline().Format("2006-01-02 15:04:05"))
 
 	output += "---\n\n"
-	output += "[← Back to archive](/r/pierre115/gnopendao2:archive) | [← Home](/r/pierre115/gnopendao2)\n"
+	output += "[← Back to archive](/r/pierre115/gnopendao:archive) | [← Home](/r/pierre115/gnopendao)\n"
 
 	return output
 }

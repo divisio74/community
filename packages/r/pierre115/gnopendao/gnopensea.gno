@@ -1,4 +1,4 @@
-package gnopendao2
+package gnopendao
 
 import (
 	"chain"
@@ -10,7 +10,7 @@ import (
 	"gno.land/p/demo/tokens/grc721"
 	"gno.land/p/nt/avl"
 	"gno.land/p/nt/ufmt"
-	"gno.land/r/pierre115/daoregistry4"
+	"gno.land/r/pierre115/registrydao"
 )
 
 var (
@@ -37,7 +37,7 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 	}
 
 	// Check if collection is registered in the GLOBAL NFT Registry (technical check)
-	if !daoregistry4.IsRegistered(nftRealmAddress) {
+	if !registrydao.IsRegistered(nftRealmAddress) {
 		panic("NFT collection not registered in the global NFT Registry. The collection must call nftregistry.RegisterCollection() first.")
 	}
 	// Check if collection is approved by DAO (governance check)
@@ -46,7 +46,7 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 	}
 
 	// Get NFT getter from the global registry
-	getter, exists := daoregistry4.GetNFTGetter(nftRealmAddress)
+	getter, exists := registrydao.GetNFTGetter(nftRealmAddress)
 	if !exists {
 		panic("Failed to get NFT getter from registry")
 	}

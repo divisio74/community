@@ -1,4 +1,4 @@
-package daoregistry4
+package registrydao
 
 import (
 	//"chain/banker"

@@ -1,12 +1,12 @@
-package mynft5
+package mynft
 
 import (
-	"strconv"
 	"chain/runtime"
+	"strconv"
 
 	"gno.land/p/demo/tokens/grc721"
 	"gno.land/p/nt/ufmt"
-	"gno.land/r/pierre115/daoregistry4"
+	"gno.land/r/pierre115/registrydao"
 )
 
 type NFTCollection interface {
@@ -27,7 +27,7 @@ func init() {
 
 // Register registers this collection on the NFT registry
 func Register(_ realm) {
-	daoregistry4.RegisterCollection(
+	registrydao.RegisterCollection(
 		myRealmAddr,
 		"Test NFT Collection",
 		"TEST",

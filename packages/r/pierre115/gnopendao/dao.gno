@@ -1,4 +1,4 @@
-package gnopendao2
+package gnopendao
 
 import (
 	//"chain/banker"
