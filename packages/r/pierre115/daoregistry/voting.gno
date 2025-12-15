@@ -7,7 +7,7 @@ import (
 	"gno.land/p/nt/ufmt"
 )
 
-// ProposeVerifyCollection - Create proposal to verify a collection
+// ProposeVerifyCollection - Create proposal to verify a collection and verify it upon approval
 func ProposeVerifyCollection(_ realm, collectionAddr address, collectionName string, reason string) uint64 {
 	caller := runtime.PreviousRealm().Address()
 

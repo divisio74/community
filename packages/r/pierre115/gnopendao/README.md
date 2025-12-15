@@ -1,67 +1,67 @@
 # GnopenSea - NFT Marketplace
 
-Marketplace NFT décentralisé sur Gno.land avec gouvernance DAO.
+Decentralized NFT marketplace on Gno.land with DAO governance.
 
-## 🚀 Comment lister votre NFT en 3 étapes
+## 🚀 How to list your NFT in 3 steps
 
-### Étape 1 : Enregistrer votre collection
+### Step 1: Register your collection
 
-**Depuis votre package NFT**, appelez la fonction `Register()` :
+**From your NFT package**, call the `Register()` function:
 
 ```bash
 gnokey maketx call \
-  -pkgpath "gno.land/r/[votre-username]/[votre-nft]" \
+  -pkgpath "gno.land/r/[your-username]/[your-nft]" \
   -func "Register" \
   -gas-fee 1000000ugnot \
   -gas-wanted 5000000 \
   -broadcast \
   -chainid "staging" \
-  votre-wallet
+  your-wallet
 ```
 
-Cela enregistre votre collection dans le **Registry DAO** (statut: non vérifié).
+This registers your collection in the **Registry DAO** (status: unverified).
 
-### Étape 2 : Approuver le marketplace
+### Step 2: Approve the marketplace
 
-Donnez la permission au marketplace de transférer vos NFTs :
+Give permission to the marketplace to transfer your NFTs:
 
 ```bash
 gnokey maketx call \
-  -pkgpath "gno.land/r/[votre-username]/[votre-nft]" \
+  -pkgpath "gno.land/r/[your-username]/[your-nft]" \
   -func "SetApprovalForAll" \
-  -args "g1[adresse-du-marketplace]" \
+  -args "g1[marketplace-address]" \
   -args "true" \
   -gas-fee 1000000ugnot \
   -gas-wanted 5000000 \
   -broadcast \
-  votre-wallet
+  your-wallet
 ```
 
-### Étape 3 : Créer votre listing
+### Step 3: Create your listing
 
-Listez votre NFT à vendre :
+List your NFT for sale:
 
 ```bash
 gnokey maketx call \
   -pkgpath "gno.land/r/pierre115/gnopendao" \
   -func "CreateListing" \
-  -args "gno.land/r/[votre-username]/[votre-nft]" \
+  -args "gno.land/r/[your-username]/[your-nft]" \
   -args "1" \
   -args "5000000" \
   -gas-fee 1000000ugnot \
   -gas-wanted 5000000 \
   -broadcast \
-  votre-wallet
+  your-wallet
 ```
 
-**Paramètres :**
-- 1er arg : Adresse de votre package NFT
-- 2ème arg : Token ID à vendre
-- 3ème arg : Prix en ugnot (5000000 = 5 GNOT)
+**Parameters:**
+- 1st arg: Your NFT package address
+- 2nd arg: Token ID to sell
+- 3rd arg: Price in ugnot (5000000 = 5 GNOT)
 
 ---
 
-## 🛒 Acheter un NFT
+## 🛒 Buy an NFT
 
 ```bash
 gnokey maketx call \
@@ -72,14 +72,14 @@ gnokey maketx call \
   -gas-fee 1000000ugnot \
   -gas-wanted 5000000 \
   -broadcast \
-  votre-wallet
+  your-wallet
 ```
 
 ---
 
-## 📋 Gérer vos listings
+## 📋 Manage your listings
 
-### Modifier le prix
+### Update price
 
 ```bash
 gnokey maketx call \
@@ -88,10 +88,10 @@ gnokey maketx call \
   -args "1" \
   -args "10000000" \
   -broadcast \
-  votre-wallet
+  your-wallet
 ```
 
-### Annuler un listing
+### Cancel a listing
 
 ```bash
 gnokey maketx call \
@@ -99,29 +99,29 @@ gnokey maketx call \
   -func "CancelListing" \
   -args "1" \
   -broadcast \
-  votre-wallet
+  your-wallet
 ```
 
 ---
 
-## 🎨 Faire vérifier votre collection (badge vérifié)
+## Get your collection verified (verified badge)
 
-### 1. Créer une proposal au Registry DAO
+### 1. Create a proposal to the Registry DAO
 
 ```bash
 gnokey maketx call \
   -pkgpath "gno.land/r/pierre115/daoregistry4" \
   -func "ProposeVerifyCollection" \
-  -args "g1[adresse-de-votre-nft]" \
-  -args "Nom de la collection" \
-  -args "Raison de la vérification" \
+  -args "g1[your-nft-address]" \
+  -args "Collection name" \
+  -args "Verification reason" \
   -gas-fee 1000000ugnot \
   -gas-wanted 5000000 \
   -broadcast \
-  votre-wallet
+  your-wallet
 ```
 
-### 2. Les membres du DAO votent
+### 2. DAO members vote
 
 ```bash
 gnokey maketx call \
@@ -130,10 +130,10 @@ gnokey maketx call \
   -args "1" \
   -args "yes" \
   -broadcast \
-  membre-dao-wallet
+  dao-member-wallet
 ```
 
-### 3. Exécuter la proposal (après quorum)
+### 3. Execute the proposal (after quorum)
 
 ```bash
 gnokey maketx call \
@@ -141,46 +141,46 @@ gnokey maketx call \
   -func "TallyRegistryProposal" \
   -args "1" \
   -broadcast \
-  votre-wallet
+  your-wallet
 ```
 
 ---
 
-## 💰 Distribution des paiements
+## 💰 Payment Distribution
 
-Exemple avec frais marketplace 2.5% et royalties 10% :
+Example with 2.5% marketplace fee and 10% royalties:
 
 ```
-Prix de vente : 100 GNOT
-├── Frais marketplace (2.5%) : 2.5 GNOT
-├── Royalties créateur (10%) : 10 GNOT
-└── Vendeur reçoit : 87.5 GNOT
+Sale price: 100 GNOT
+├── Marketplace fee (2.5%): 2.5 GNOT
+├── Creator royalties (10%): 10 GNOT
+└── Seller receives: 87.5 GNOT
 ```
 
 ---
 
-## 🏛️ Gouvernance DAO
+## 🏛️ DAO Governance
 
-Le marketplace est gouverné par un DAO. Les membres peuvent créer des proposals pour :
+The marketplace is governed by a DAO. Members can create proposals to:
 
-- ✅ Approuver/retirer des collections
-- ✅ Modifier les frais du marketplace
-- ✅ Retirer des fonds du trésor
-- ✅ Annuler un listing problématique
+- ✅ Approve/remove collections
+- ✅ Modify marketplace fees
+- ✅ Withdraw funds from treasury
+- ✅ Cancel problematic listings
 
-### Créer une proposal (exemple: modifier les frais)
+### Create a proposal (example: update fees)
 
 ```bash
 gnokey maketx call \
   -pkgpath "gno.land/r/pierre115/gnopendao" \
   -func "ProposeUpdateFees" \
   -args "300" \
-  -args "Réduction des frais à 3%" \
+  -args "Reduce fees to 3%" \
   -broadcast \
-  membre-dao-wallet
+  dao-member-wallet
 ```
 
-### Voter sur une proposal
+### Vote on a proposal
 
 ```bash
 gnokey maketx call \
@@ -189,14 +189,14 @@ gnokey maketx call \
   -args "1" \
   -args "yes" \
   -broadcast \
-  membre-dao-wallet
+  dao-member-wallet
 ```
 
 ---
 
-## 🔧 Configuration NFT minimale
+## 🔧 Minimal NFT Configuration
 
-Votre package NFT doit avoir une fonction `Register()` :
+Your NFT package must have a `Register()` function:
 
 ```go
 package mynft
@@ -215,21 +215,21 @@ func init() {
     nft = grc721.NewBasicNFT("My Collection", "MC")
 }
 
-// Register dans le registry
+// Register in the registry
 func Register(_ realm) {
     daoregistry4.RegisterCollection(
         myRealmAddr,
         "My Collection",
         "MC",
         "art",
-        "Description de ma collection",
-        "https://mon-site.com",
+        "My collection description",
+        "https://my-site.com",
         false,
         nft.Getter(),
     )
 }
 
-// Fonction obligatoire pour le marketplace
+// Required function for the marketplace
 func Getter() grc721.NFTGetter {
     return nft.Getter()
 }
@@ -237,45 +237,45 @@ func Getter() grc721.NFTGetter {
 
 ---
 
-## 📊 Fonctions de lecture
+## 📊 Read Functions
 
 ```bash
-# Voir tous les listings actifs
+# View all active listings
 curl https://rpc.gno.land/r/pierre115/gnopendao:
 
-# Statistiques du marketplace
+# Marketplace statistics
 curl https://rpc.gno.land/r/pierre115/gnopendao:stats
 
-# Détails d'un listing
+# Listing details
 curl https://rpc.gno.land/r/pierre115/gnopendao:listing/1
 
-# Collections enregistrées
+# Registered collections
 curl https://rpc.gno.land/r/pierre115/daoregistry4:
 ```
 
 ---
 
-## 🔐 Sécurité
+## 🔐 Security
 
-- ✅ Vérification de propriété avant listing
-- ✅ Vérification d'approbation avant vente
-- ✅ Transferts atomiques
-- ✅ Remboursement automatique des surplus
-- ✅ Limites de frais (max 10%)
-- ✅ Gouvernance décentralisée
+- ✅ Ownership verification before listing
+- ✅ Approval verification before sale
+- ✅ Atomic transfers
+- ✅ Automatic refund of excess payment
+- ✅ Fee limits (max 10%)
+- ✅ Decentralized governance
 
 ---
 
-## 🆘 Problèmes courants
+## 🆘 Common Issues
 
 **"Collection not registered"**
-→ Vous devez d'abord appeler `Register()` sur votre NFT
+→ You must first call `Register()` on your NFT
 
 **"Insufficient payment"**
-→ Le montant envoyé doit correspondre au prix du listing
+→ The amount sent must match the listing price
 
 **"Not approved"**
-→ Appelez `SetApprovalForAll()` avant de créer un listing
+→ Call `SetApprovalForAll()` before creating a listing
 
 **"Not owner"**
-→ Seul le propriétaire du NFT peut le lister
+→ Only the NFT owner can list it

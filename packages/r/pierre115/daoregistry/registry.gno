@@ -7,21 +7,6 @@ import (
 	"gno.land/p/nt/avl"
 )
 
-// CollectionInfo - Extended metadata stored in the registry
-type CollectionInfo struct {
-	Address          address
-	Name             string
-	Symbol           string
-	Creator          address
-	RegisteredAt     int64
-	Verified         bool
-	Category         string
-	Description      string
-	ExternalURL      string
-	NFTGetter        grc721.NFTGetter
-	SupportsMetadata bool
-}
-
 var (
 	collections     avl.Tree
 	categoriesIndex avl.Tree

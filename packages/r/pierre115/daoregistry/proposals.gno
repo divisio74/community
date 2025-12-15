@@ -16,15 +16,7 @@ const (
 	REGISTRY_QUORUM        = commondao.QuorumOneThird // 33%
 )
 
-// VerifyCollectionProposal - Proposal to verify a collection
-type VerifyCollectionProposal struct {
-	collectionAddr address
-	collectionName string
-	reason         string
-	approved       bool
-	executed       bool
-}
-
+// NewVerifyCollectionProposal creates a new VerifyCollectionProposal instance.
 func NewVerifyCollectionProposal(addr address, name string, reason string) *VerifyCollectionProposal {
 	return &VerifyCollectionProposal{
 		collectionAddr: addr,
