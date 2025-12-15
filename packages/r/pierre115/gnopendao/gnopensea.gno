@@ -46,7 +46,7 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 	}
 
 	// Get NFT getter from the global registry
-	getter, exists : registrydao.GetNFTGetter(nftRealmAddress)
+	getter, exists := registrydao.GetNFTGetter(nftRealmAddress)
 	if !exists {
 		panic("Failed to get NFT getter from registry")
 	}
@@ -372,7 +372,7 @@ func GetAllListings() string {
 			// Try to get image and name from onchain metadata via the registry
 			// The registry can make the type assertion in the collection's realm context
 			var image, name string
-			metadata, err : registrydao.GetTokenMetadata(listing.NFTRealmAddress, listing.TokenId)
+			metadata, err := registrydao.GetTokenMetadata(listing.NFTRealmAddress, listing.TokenId)
 			if err == nil {
 				image = metadata.Image
 				name = metadata.Name
@@ -423,7 +423,7 @@ func GetListingDetails(listingId int) string {
 	var attributes []grc721.Trait
 
 	// Try onchain metadata via registry
-	metadata, err : registrydao.GetTokenMetadata(listing.NFTRealmAddress, listing.TokenId)
+	metadata, err := registrydao.GetTokenMetadata(listing.NFTRealmAddress, listing.TokenId)
 	if err == nil {
 		name = metadata.Name
 		description = metadata.Description

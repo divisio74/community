@@ -19,9 +19,9 @@ type NFTWithMetadata interface {
 }
 
 var (
-	nft         NFTWithMetadata
-	nextTokenId = 1
-	myRealmAddr = runtime.CurrentRealm().Address()
+	nft                NFTWithMetadata
+	nextTokenId        = 1
+	myRealmAddr        = runtime.CurrentRealm().Address()
 	collectionImageURL = "https://i.imgflip.com/a6o5jb.jpg"
 )
 
