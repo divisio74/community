@@ -37,7 +37,7 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 	}
 
 	// Check if collection is registered in the GLOBAL NFT Registry (technical check)
-	if !registrydao.IsRegistered(nftRealmAddress) {
+	if registrydao.IsRegistered(nftRealmAddress) {
 		panic("NFT collection not registered in the global NFT Registry. The collection must call nftregistry.RegisterCollection() first.")
 	}
 	// Check if collection is approved by DAO (governance check)
@@ -46,7 +46,7 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 	}
 
 	// Get NFT getter from the global registry
-	getter, exists := registrydao.GetNFTGetter(nftRealmAddress)
+	getter, exists : registrydao.GetNFTGetter(nftRealmAddress)
 	if !exists {
 		panic("Failed to get NFT getter from registry")
 	}
@@ -200,7 +200,7 @@ func BuyNFT(_ realm, listingId int) {
 }
 
 // CancelListing - Cancel own listing (seller only)
-func CancelListing(_realm, listingId int) {
+func CancelListing(_ realm, listingId int) {
 	caller := runtime.PreviousRealm().Address()
 
 	listing := getListing(listingId)
@@ -362,20 +362,41 @@ func GetBalance() int64 {
 
 // ============= READ FUNCTIONS FOR FRONTEND =============
 
-// GetAllListings - Return all active listings
+// GetAllListings - Return all active listings with metadata
 func GetAllListings() string {
 	var listingsData []string
 
 	listings.Iterate("", "", func(key string, value interface{}) bool {
 		listing := value.(*Listing)
 		if listing.Active {
-			// Format: listingId|nftAddress|tokenId|price|seller
-			listingData := ufmt.Sprintf("%d|%s|%s|%d|%s",
+			// Try to get image and name from onchain metadata via the registry
+			// The registry can make the type assertion in the collection's realm context
+			var image, name string
+			metadata, err : registrydao.GetTokenMetadata(listing.NFTRealmAddress, listing.TokenId)
+			if err == nil {
+				image = metadata.Image
+				name = metadata.Name
+			}
+
+			// If no image, use the collection's default image
+			if image == "" {
+				image = "https://i.imgflip.com/a6o5jb.jpg"
+			}
+
+			// If no name, use default
+			if name == "" {
+				name = ufmt.Sprintf("NFT #%s", listing.TokenId.String())
+			}
+
+			// Format: listingId|nftAddress|tokenId|price|seller|image|name
+			listingData := ufmt.Sprintf("%d|%s|%s|%d|%s|%s|%s",
 				listing.ListingId,
 				listing.NFTRealmAddress.String(),
 				listing.TokenId.String(),
 				listing.Price,
 				listing.Seller.String(),
+				image,
+				name,
 			)
 			listingsData = append(listingsData, listingData)
 		}
@@ -396,15 +417,32 @@ func GetListingDetails(listingId int) string {
 		return "Listing not found"
 	}
 
-	nftInstance := listing.NFTGetter()
+	// Get NFT metadata via the registry
+	// The registry can make the type assertion in the collection's realm context
+	var name, description, image, uri string
+	var attributes []grc721.Trait
 
-	// Get NFT metadata if available
-	var name, uri string
-	if metaNFT, ok := nftInstance.(grc721.IGRC721Metadata); ok {
-		name = metaNFT.Name()
-		if tokenURI, err := metaNFT.TokenURI(listing.TokenId); err == nil {
-			uri = tokenURI
+	// Try onchain metadata via registry
+	metadata, err : registrydao.GetTokenMetadata(listing.NFTRealmAddress, listing.TokenId)
+	if err == nil {
+		name = metadata.Name
+		description = metadata.Description
+		image = metadata.Image
+		attributes = metadata.Attributes
+	}
+
+	// Format attributes as JSON array
+	attributesJSON := "[]"
+	if len(attributes) > 0 {
+		attrStr := "["
+		for i, attr := range attributes {
+			if i > 0 {
+				attrStr += ","
+			}
+			attrStr += ufmt.Sprintf(`{"trait_type":"%s","value":"%s"}`, attr.TraitType, attr.Value)
 		}
+		attrStr += "]"
+		attributesJSON = attrStr
 	}
 
 	// Format JSON-like response
@@ -415,7 +453,10 @@ func GetListingDetails(listingId int) string {
   "seller": "%s",
   "active": %t,
   "name": "%s",
+  "description": "%s",
+  "image": "%s",
   "uri": "%s",
+  "attributes": %s,
   "listedAt": %d
 }`,
 		listing.ListingId,
@@ -424,7 +465,10 @@ func GetListingDetails(listingId int) string {
 		listing.Seller.String(),
 		listing.Active,
 		name,
+		description,
+		image,
 		uri,
+		attributesJSON,
 		listing.ListedAt,
 	)
 
