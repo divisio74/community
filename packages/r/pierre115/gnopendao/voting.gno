@@ -216,3 +216,38 @@ func GetAllActiveProposals() string {
 
 	return output
 }
+
+// GetAllFinishedProposals - Get all finished proposals
+func GetAllFinishedProposals() string {
+	proposals := marketplaceDAO.FinishedProposals()
+
+	if proposals.Size() == 0 {
+		return "No finished proposals"
+	}
+
+	output := "=== Finished Proposals ===\n\n"
+
+	proposals.Iterate(0, proposals.Size(), false, func(p *commondao.Proposal) bool {
+		// Count votes
+		yesVotes := 0
+		noVotes := 0
+		p.VotingRecord().Iterate(0, p.VotingRecord().Size(), false, func(v commondao.Vote) bool {
+			if v.Choice == commondao.ChoiceYes {
+				yesVotes++
+			} else if v.Choice == commondao.ChoiceNo {
+				noVotes++
+			}
+			return false
+		})
+
+		output += ufmt.Sprintf("ID: %d | %s | Yes: %d | No: %d | Status: %s\n",
+			p.ID(),
+			p.Definition().Title(),
+			yesVotes,
+			noVotes,
+			string(p.Status()))
+		return false
+	})
+
+	return output
+}
