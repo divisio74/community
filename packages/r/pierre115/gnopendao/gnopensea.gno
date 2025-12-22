@@ -37,7 +37,7 @@ func CreateListing(_ realm, nftRealmAddress address, tokenId grc721.TokenID, pri
 	}
 
 	// Check if collection is registered in the GLOBAL NFT Registry (technical check)
-	if registrydao.IsRegistered(nftRealmAddress) {
+	if !registrydao.IsRegistered(nftRealmAddress) {
 		panic("NFT collection not registered in the global NFT Registry. The collection must call nftregistry.RegisterCollection() first.")
 	}
 	// Check if collection is approved by DAO (governance check)

@@ -22,7 +22,7 @@ var (
 	nft                NFTWithMetadata
 	nextTokenId        = 1
 	myRealmAddr        = runtime.CurrentRealm().Address()
-	collectionImageURL = "https://i.imgflip.com/a6o5jb.jpg"
+	collectionImageURL = "https://i.imgflip.com/91vskx.jpg"
 )
 
 func init() {

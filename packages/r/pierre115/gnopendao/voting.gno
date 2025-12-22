@@ -210,7 +210,29 @@ func GetAllActiveProposals() string {
 	output := "=== Active Proposals ===\n\n"
 
 	proposals.Iterate(0, proposals.Size(), false, func(p *commondao.Proposal) bool {
-		output += ufmt.Sprintf("ID: %d | %s\n", p.ID(), p.Definition().Title())
+		// Count votes
+		yesVotes := 0
+		noVotes := 0
+		p.VotingRecord().Iterate(0, p.VotingRecord().Size(), false, func(v commondao.Vote) bool {
+			if v.Choice == commondao.ChoiceYes {
+				yesVotes++
+			} else if v.Choice == commondao.ChoiceNo {
+				noVotes++
+			}
+			return false
+		})
+
+		// Get voting deadline as Unix timestamp
+		deadlineUnix := p.VotingDeadline().Unix()
+		votingEnded := p.HasVotingDeadlinePassed()
+
+		output += ufmt.Sprintf("ID: %d | %s | Yes: %d | No: %d | Deadline: %d | Ended: %t\n",
+			p.ID(),
+			p.Definition().Title(),
+			yesVotes,
+			noVotes,
+			deadlineUnix,
+			votingEnded)
 		return false
 	})
 
