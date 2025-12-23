@@ -1,6 +1,6 @@
 import { GnoJSONRPCProvider } from "@gnolang/gno-js-client";
 
-// Configuration du provider - Use environment variables with fallback
+// Provider configuration - Use environment variables with fallback
 const RPC_ENDPOINT = process.env.NEXT_PUBLIC_RPC_ENDPOINT || "https://rpc.gno.land:443";
 
 export const provider = new GnoJSONRPCProvider(RPC_ENDPOINT);
@@ -8,7 +8,7 @@ export const provider = new GnoJSONRPCProvider(RPC_ENDPOINT);
 // Chain configuration
 export const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID || "staging";
 
-// Tes realms - Use environment variables with fallback
+// Realm addresses - Use environment variables with fallback
 export const MARKETPLACE_REALM = process.env.NEXT_PUBLIC_MARKETPLACE_REALM || "gno.land/r/pierre115/gnopendao8";
 export const REGISTRY_REALM = process.env.NEXT_PUBLIC_REGISTRY_REALM || "gno.land/r/pierre115/daoregistry4";
 
@@ -19,31 +19,31 @@ console.log("  CHAIN_ID:", CHAIN_ID);
 console.log("  MARKETPLACE_REALM:", MARKETPLACE_REALM);
 console.log("  REGISTRY_REALM:", REGISTRY_REALM);
 
-// Helper pour parser les réponses
+// Helper to parse realm responses
 export function parseRealmResponse(response: string) {
   try {
-    // Les réponses Gno.land peuvent être dans différents formats:
+    // Gno.land responses can be in different formats:
     // Format 1: "data"
     // Format 2: ("data" string)
-    // Format 3: (123 int) ou (0 int64)
+    // Format 3: (123 int) or (0 int64)
     // Format 4: data
 
     let cleaned = response;
 
-    // Format numérique: (123 int) ou (0 int64) → 123
+    // Numeric format: (123 int) or (0 int64) → 123
     const numMatch = cleaned.match(/^\((\d+)\s+(int|int64|uint64)\)$/);
     if (numMatch) {
       return numMatch[1];
     }
 
-    // Supprimer le format debug Gno.land: (" ... " string)
-    cleaned = cleaned.replace(/^\("\s*/, '');  // Supprimer (" au début
-    cleaned = cleaned.replace(/\s*"\s*string\)\s*$/, '');  // Supprimer " string) à la fin
+    // Remove Gno.land debug format: (" ... " string)
+    cleaned = cleaned.replace(/^\("\s*/, '');  // Remove (" at start
+    cleaned = cleaned.replace(/\s*"\s*string\)\s*$/, '');  // Remove " string) at end
 
-    // Supprimer les quotes simples au début/fin
+    // Remove quotes at start/end
     cleaned = cleaned.replace(/^"|"$/g, '');
 
-    // Remplacer les \n par de vrais retours à la ligne
+    // Replace \n with actual newlines
     cleaned = cleaned.replace(/\\n/g, '\n');
 
     return cleaned;

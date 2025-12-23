@@ -44,11 +44,11 @@ export async function getActiveListings(): Promise<NFTListing[]> {
         console.log("  [5] Image raw:", `"${image}"`, "| Length:", image?.length || 0);
         console.log("  [6] Name raw:", `"${name}"`, "| Length:", name?.length || 0);
 
-        // Utiliser l'image des métadonnées directement (plus de hardcoding)
+        // Use image from metadata directly (no hardcoding)
         const imageUrl = image?.trim() || "";
         const finalImage = (imageUrl && imageUrl !== '""')
           ? imageUrl
-          : ""; // Pas d'image par défaut, on fait confiance au backend
+          : ""; // No default image, trust the backend
 
         const finalName = (name && name.trim() && name !== "\"\"")
           ? name.trim()
@@ -117,7 +117,7 @@ export async function getMarketplaceStats() {
     return result;
   } catch (error) {
     console.error("Failed to get stats:", error);
-    // Retourne des données par défaut au lieu de null
+    // Return default data instead of null
     return {
       activeListings: 0,
       totalSales: 0,
