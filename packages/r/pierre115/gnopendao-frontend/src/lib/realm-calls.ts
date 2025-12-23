@@ -70,7 +70,7 @@ export async function getActiveListings(): Promise<NFTListing[]> {
       });
   } catch (error) {
     console.error("Failed to get listings:", error);
-    return []; // Retourne un tableau vide au lieu de crash
+    return []; // Return empty array instead of crashing
   }
 }
 
