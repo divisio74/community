@@ -1,8 +1,8 @@
 # GnopenSea Frontend
 
-Frontend Next.js pour le marketplace NFT décentralisé GnopenSea sur Gno.land.
+Next.js frontend for the decentralized NFT marketplace GnopenSea on Gno.land.
 
-## 🚀 Démarrage Rapide
+## 🚀 Quick Start
 
 ### 1. Installation
 
@@ -10,110 +10,116 @@ Frontend Next.js pour le marketplace NFT décentralisé GnopenSea sur Gno.land.
 npm install
 ```
 
-### 2. Configuration du Réseau
+### 2. Network Configuration
 
-Le frontend est configuré pour le réseau **Staging** de Gno.land.
+The frontend is configured for the Gno.land **Staging** network.
 
-**Paramètres actuels** (voir [`src/lib/gno.ts`](src/lib/gno.ts)) :
-- RPC : `https://rpc.gno.land:443`
-- Chain ID : `staging`
-- Marketplace : `gno.land/r/pierre115/gnopendao2`
-- Registry : `gno.land/r/pierre115/daoregistry4`
+**Current settings** (see [`src/lib/gno.ts`](src/lib/gno.ts)):
+- RPC: `https://rpc.gno.land:443`
+- Chain ID: `staging`
+- Marketplace: `gno.land/r/pierre115/gnopendao8`
+- Registry: `gno.land/r/pierre115/daoregistry4`
 
-### 3. Configuration d'Adena Wallet
+### 3. Adena Wallet Configuration
 
-Pour interagir avec l'application, configurez [Adena Wallet](https://adena.app/) :
+To interact with the application, configure [Adena Wallet](https://adena.app/):
 
-1. Installer l'extension Adena
-2. Ajouter le réseau **Staging** :
-   - Network Name : `Gno Staging`
-   - RPC URL : `https://rpc.gno.land:443`
-   - Chain ID : `staging`
-3. Basculer vers ce réseau dans Adena
+1. Install the Adena extension
+2. Add the **Staging** network:
+   - Network Name: `Gno Staging`
+   - RPC URL: `https://rpc.gno.land:443`
+   - Chain ID: `staging`
+3. Switch to this network in Adena
 
-### 4. Lancer le Serveur de Développement
+### 4. Start Development Server
 
 ```bash
 npm run dev
 ```
 
-Ouvrez [http://localhost:3000](http://localhost:3000) pour voir l'application.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 📁 Structure du Projet
+## 📁 Project Structure
 
 ```
 src/
 ├── app/
-│   ├── page.tsx              # Page d'accueil avec listings NFT
-│   ├── layout.tsx            # Layout principal
-│   └── globals.css           # Styles globaux (effets holographiques)
+│   ├── page.tsx              # Homepage with NFT listings
+│   ├── dao/
+│   │   └── page.tsx          # DAO governance page
+│   ├── layout.tsx            # Main layout
+│   └── globals.css           # Global styles (holographic effects)
 ├── components/
-│   ├── Header.tsx            # En-tête avec wallet connect
-│   └── nft/
-│       └── NFTCard.tsx       # Carte NFT
+│   ├── Header.tsx            # Header with wallet connect
+│   ├── nft/
+│   │   └── NFTCard.tsx       # NFT card component
+│   └── ui/                   # UI components (buttons, cards, etc.)
 ├── lib/
-│   ├── gno.ts               # Configuration RPC et realms
-│   ├── realm-calls.ts       # Appels aux smart contracts
-│   └── types.ts             # Types TypeScript
+│   ├── gno.ts               # RPC and realms configuration
+│   ├── realm-calls.ts       # Smart contract calls
+│   └── types.ts             # TypeScript types
 └── hooks/
-    └── useWallet.ts         # Hook pour Adena wallet
+    └── useWallet.ts         # Adena wallet hook
 ```
 
 ---
 
 ## 🔧 Configuration
 
-### Changer de Réseau
+### Switching Networks
 
-Pour basculer vers un autre réseau (test4, mainnet, etc.), modifiez [`src/lib/gno.ts`](src/lib/gno.ts) :
+To switch to another network (test4, mainnet, etc.), modify [`src/lib/gno.ts`](src/lib/gno.ts):
 
 ```typescript
 export const provider = new GnoJSONRPCProvider(
-  "https://rpc.VOTRE_RESEAU.gno.land"
+  "https://rpc.YOUR_NETWORK.gno.land"
 );
 
-export const CHAIN_ID = "VOTRE_CHAIN_ID";
-export const MARKETPLACE_REALM = "gno.land/r/VOTRE_USERNAME/VOTRE_REALM";
+export const CHAIN_ID = "YOUR_CHAIN_ID";
+export const MARKETPLACE_REALM = "gno.land/r/YOUR_USERNAME/YOUR_REALM";
 ```
 
-Voir [NETWORK_CONFIG.md](NETWORK_CONFIG.md) pour plus de détails.
+See [NETWORK_CONFIG.md](NETWORK_CONFIG.md) for more details.
 
 ---
 
-## 🎨 Fonctionnalités
+## 🎨 Features
 
-- ✅ Affichage des NFTs listés sur le marketplace
-- ✅ Statistiques en temps réel (listings actifs, volume, ventes)
-- ✅ Interface avec effets holographiques et animations
-- ✅ Connexion wallet Adena
-- ✅ Achat de NFTs
-- ✅ Système de gouvernance DAO
+- ✅ Display NFTs listed on the marketplace
+- ✅ Real-time statistics (active listings, volume, sales)
+- ✅ Interface with holographic effects and animations
+- ✅ Adena wallet connection
+- ✅ Buy NFTs
+- ✅ DAO governance system
+- ✅ Vote on proposals (Yes/No)
+- ✅ Execute proposals after voting period
+- ✅ Countdown timer for active proposals
 
 ---
 
 ## 🛠️ Technologies
 
-- **Next.js 16** - Framework React
-- **TypeScript** - Typage statique
+- **Next.js 16** - React framework
+- **TypeScript** - Static typing
 - **Tailwind CSS v4** - Styling
-- **TanStack Query** - Gestion des requêtes
-- **@gnolang/gno-js-client** - Client RPC Gno.land
-- **Adena Wallet** - Wallet Gno.land
+- **TanStack Query** - Query management
+- **@gnolang/gno-js-client** - Gno.land RPC client
+- **Adena Wallet** - Gno.land wallet
 
 ---
 
-## 📝 Scripts Disponibles
+## 📝 Available Scripts
 
 ```bash
-# Développement
+# Development
 npm run dev
 
-# Build de production
+# Production build
 npm run build
 
-# Lancer en production
+# Run in production
 npm start
 
 # Linter
@@ -122,41 +128,54 @@ npm run lint
 
 ---
 
-## 🔍 Dépannage
+## Environment Variables (Future)
 
-### "Network Error" dans la console
+To facilitate network switching, you can create a `.env.local` file:
 
-- Vérifiez que le réseau Staging est en ligne
-- Vérifiez votre connexion internet
-- Consultez [https://rpc.gno.land:443](https://rpc.gno.land:443)
+```env
+NEXT_PUBLIC_RPC_ENDPOINT=https://rpc.gno.land:443
+NEXT_PUBLIC_CHAIN_ID=staging
+NEXT_PUBLIC_MARKETPLACE_REALM=gno.land/r/pierre115/gnopendao8
+NEXT_PUBLIC_REGISTRY_REALM=gno.land/r/pierre115/daoregistry4
+```
+Or your own path !
+---
 
-### Pas de données affichées
+## 🔍 Troubleshooting
 
-- Le marketplace peut être vide (aucun NFT listé)
-- Vérifiez les realms dans [`src/lib/gno.ts`](src/lib/gno.ts)
-- Ouvrez la console pour voir les erreurs
+### "Network Error" in console
 
-### Wallet ne se connecte pas
+- Check that the Staging network is online
+- Check your internet connection
+- Visit [https://rpc.gno.land:443](https://rpc.gno.land:443)
 
-- Vérifiez qu'Adena est installé
-- Vérifiez qu'Adena est sur le réseau `staging`
-- Rechargez la page
+### No data displayed
+
+- The marketplace might be empty (no listed NFTs)
+- Check the realms in [`src/lib/gno.ts`](src/lib/gno.ts)
+- Open the console to see errors
+
+### Wallet won't connect
+
+- Check that Adena is installed
+- Check that Adena is on the `staging` network
+- Reload the page
 
 ---
 
-## 📚 Documentation Complète
+## 📚 Complete Documentation
 
-- [Configuration Réseau](NETWORK_CONFIG.md)
+- [Network Configuration](NETWORK_CONFIG.md)
 - [Smart Contracts (Backend)](../community/packages/r/pierre115/gnopendao/README.md)
 
 ---
 
 ## 🤝 Contribution
 
-Ce projet fait partie du stage GnopenSea - Marketplace NFT décentralisé avec gouvernance DAO.
+This project is part of the GnopenSea internship - Decentralized NFT marketplace with DAO governance.
 
 ---
 
 ## 📄 License
 
-Projet de stage - Tous droits réservés
+Internship project - All rights reserved
